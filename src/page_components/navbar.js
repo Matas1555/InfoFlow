@@ -6,22 +6,24 @@ export default function NavBar() {
     return (
         <div className="nav_bar_wrapper">
         <header>
-            <a href="home_page.js"><img className="logo" src={InfoFlowIcon} alt="logo"></img></a>
+            <Link to="/HomePage">
+            <img className="logo" src={InfoFlowIcon} alt="logo"></img>
+            </Link>
         <nav>
         <ul className="nav_bar">
             <li>
                 <Link to="/About">
-                <a className="nav_about">About</a>
+                <div className="nav_about">About</div>
                 </Link>
             </li>
             <li>
             <Link to="/Contact">
-                <a className="nav_about">Contact</a>
+                <div className="nav_about">Contact</div>
                 </Link>
             </li>
             <li>
             <Link to="/Login">
-                <a className="nav_about">Login</a>
+                <div className="nav_about">Login</div>
                 </Link>
             </li>
         </ul>

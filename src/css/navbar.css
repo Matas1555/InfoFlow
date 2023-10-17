@@ -1,6 +1,5 @@
 
 header {
-
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
@@ -9,7 +8,7 @@ header {
 	background-color: #355c7d;
 	margin: 0;
 	border-bottom: 3px solid black;
-	
+	overflow: auto;
 
 }
 
@@ -39,10 +38,10 @@ header {
 .nav_bar li {
 	display: inline-block;
 	padding: 0em 1em;
-	
+	text-decoration: none;
 
 }
-.nav_bar li a {
+.nav_bar li div {
 	transition: all 0.3s ease 0s;
 	text-decoration: none;
 	color: white;
@@ -53,14 +52,14 @@ header {
 }
 
 
-.nav_bar li a:hover {
+.nav_bar li div:hover {
 	color: rgb(120, 116, 116);
 	background-color: #2b4e6a;
 	padding: 15px 40px 15px 40px;
 
 }
 
-.nav_bar li a:active {
+.nav_bar li div:active {
 	color: rgb(165, 164, 164);
 	background-color: #223e54;
 	padding: 15px 50px 15px 50px;
