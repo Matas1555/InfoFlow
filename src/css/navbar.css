@@ -12,6 +12,10 @@ header {
 
 }
 
+a{
+	text-decoration: none;
+}
+
 .logo {
 	justify-content: flex-start;
 	height: 75px;
