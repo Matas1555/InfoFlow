@@ -1,21 +1,28 @@
 import "../css/navbar.css";
 import InfoFlowIcon from "../assets/LOGO.png";
+import { Link, useMatch, useResolvedPath, useNavigate } from "react-router-dom";
 
 export default function NavBar() {
     return (
-        <div class="nav_bar_wrapper">
+        <div className="nav_bar_wrapper">
         <header>
-            <a href="home_page.js"><img class="logo" src={InfoFlowIcon} alt="logo"></img></a>
+            <a href="home_page.js"><img className="logo" src={InfoFlowIcon} alt="logo"></img></a>
         <nav>
-        <ul class="nav_bar">
+        <ul className="nav_bar">
             <li>
-                <a class="nav_about" href="about.html">About</a>
+                <Link to="/About">
+                <a className="nav_about">About</a>
+                </Link>
             </li>
             <li>
-                <a class="nav_contact" href="contact.html">Contact</a>
+            <Link to="/Contact">
+                <a className="nav_about">Contact</a>
+                </Link>
             </li>
             <li>
-                <a class="nav_login" href="login.html">LogIn</a>
+            <Link to="/Login">
+                <a className="nav_about">Login</a>
+                </Link>
             </li>
         </ul>
         </nav>
