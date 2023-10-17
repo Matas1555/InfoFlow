@@ -1,12 +1,15 @@
+
 header {
+
 	display: flex;
+	justify-content: space-between;
 	width: 100%;
 	align-items: center;
 	padding: 5px;
 	background-color: #355c7d;
 	margin: 0;
 	border-bottom: 3px solid black;
-	top:0;
+	
 
 }
 
@@ -27,7 +30,7 @@ header {
 
 .nav_bar {
 	
-	display: flex;
+	
 	flex-direction: row;
 	justify-content: flex-end;
 

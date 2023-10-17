@@ -1,5 +1,5 @@
-import "../css/sidebar.css"
-import "../assets/font-awesome/css/font-awesome.min.css"
+import "../css/sidebar.css";
+import "../assets/font-awesome/css/font-awesome.min.css";
 
 export default function SideBar(){
     return(
