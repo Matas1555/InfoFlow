@@ -1,0 +1,107 @@
+header{
+	display: flex;
+	justify-content: flex-start;
+	text-align: center;
+	width: 100%;
+	align-items: center;
+	padding: 30px;
+	background-color:#355c7d;
+	position: absolute;
+	margin:0;
+	border-bottom: 3px solid black;
+	
+}
+
+.logo{
+	height: 75px;
+	width: 250px;
+	cursor: pointer;
+	
+	font-size: 0;
+	opacity: 1;
+	transition: opacity 0.8s;
+}
+.logo:hover{
+	opacity: 0.7;
+	transition: opacity 0.6s;
+}
+.nav_bar{
+	list-style: none;
+
+}
+.nav_bar li {
+	display: inline-block;
+	padding: 0px 20px;
+	position:absolute;
+	
+}
+.nav_bar li .nav_about {
+	position: absolute;
+	text-align: center;
+	transition: all 0.3s ease 0s;
+	text-decoration: none;
+	color:  white;
+	font-size: 25px;
+	background-color: #264259;
+	border-radius: 15px 50px;
+	padding: 15px 30px 15px 30px;
+	left:850px;
+	top:-35px
+}
+.nav_bar li .nav_contact{
+	position:absolute;
+	text-align: center;
+	transition: all 0.3s ease 0s;
+	text-decoration: none;
+	color:  white;
+	font-size: 25px;
+	background-color: #264259;
+	border-radius: 15px 50px;
+	padding: 15px 30px 15px 30px;
+	left:1000px;
+	top:-35px
+}
+.nav_bar li .nav_login {
+	position: absolute;
+	text-align: center;
+	transition: all 0.3s ease 0s;
+	text-decoration: none;
+	color:  white;
+	font-size: 25px;
+	background-color: #264259;
+	border-radius: 15px 50px;
+	padding: 15px 30px 15px 30px;
+	left: 700px;
+	top:-35px
+}
+.nav_bar li a:hover {
+	color: rgb(120, 116, 116);
+	background-color: #2b4e6a;
+	padding: 15px 40px 15px 40px;
+	
+}
+.nav_bar li a:active{
+	color: rgb(165, 164, 164);
+	background-color: #223e54;
+	padding: 15px 50px 15px 50px;
+}
+.nav_button{
+	
+	transition: all 0.3s ease 0s;
+	text-decoration: none;
+	color:  white;
+	font-size: 20px;
+	background-color: #264259;
+	border-radius: 15px 50px;
+	padding: 15px 30px 15px 30px;
+	
+	border: none;
+	
+
+}
+.nav_button:hover {
+	color: rgb(120, 116, 116);
+	background-color: #2b4e6a;
+	padding: 15px 30px 15px 40px;
+	margin-left: -80px;
+}
