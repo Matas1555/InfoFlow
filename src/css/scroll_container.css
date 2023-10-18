@@ -1,0 +1,54 @@
+.List{
+  position:relative;  
+  max-height: 63vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  scrollbar-width: none;
+  width: 100vh;
+  margin-right: 0;
+ bottom: 20vh;
+ left: 20vh;
+
+  
+  
+  
+  &::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+  }
+}
+
+.Item{
+ 
+  position: relative;  
+  padding: 20px 0px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  scroll-snap-align: start;
+  min-height: 60vh;
+  width: 100vh;
+
+  background: #eee;
+}
+
+.Loader{
+    position: relative;
+    width: 100vh;
+  min-height: 20vh;
+  margin-bottom: 30px;
+  display: flex;
+  background: #444;
+  scroll-snap-align: start;
+  color: #eee;
+  align-content: center;
+  align-items: center;
+  scroll-snap-align: start;
+
+  justify-content: center;
+}

@@ -1,4 +1,6 @@
 import SideBar from "./SideBar";
+import ScrollContainer from "./ScrollContainer";
+
 
 export default function HomePage(){
 
@@ -50,8 +52,18 @@ export default function HomePage(){
 
     return (
         <>
-        <h1>homePage</h1>
-        <SideBar></SideBar>
+            <h1>homePage</h1>
+        
+            
+            <ScrollContainer/>
+            <SideBar/>
+            
+            
+           
+            
+            
         </>
+        
+        
     );
 }
