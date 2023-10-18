@@ -7,6 +7,7 @@ import SideBar from "./page_components/SideBar";
 import NavBar from "./page_components/NavBar";
 import "./css/main.css";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ScrollContainer from "./page_components/ScrollContainer";
 
 function App() {
   return ( 
@@ -25,5 +26,5 @@ function App() {
     </>
   );
 }
-
+  
 export default App;

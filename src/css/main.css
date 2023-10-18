@@ -6,3 +6,11 @@ body{
     overflow-x: hidden;
     overflow-y: hidden;
 }
+
+#root{
+   
+}
+
+h1{
+    text-align: center;
+}
