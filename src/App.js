@@ -13,9 +13,8 @@ function App() {
     <> 
       <BrowserRouter>
       <NavBar />
-      {/* <SideBar /> */}
         <Routes>
-          <Route path="/HomePage" element={<HomePage />} />
+          <Route path="/HomePage" index element={<HomePage />} />
           <Route path="/About" element ={<About/>} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/Login" element ={<Login/>} />

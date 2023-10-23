@@ -1,6 +1,12 @@
 import SideBar from "./SideBar";
+import React, { useState, useEffect } from "react";
 
 export default function HomePage(){
+
+    useEffect(() => {
+        fetchArticles("sports", "en");
+        console.log("I fire once");
+     });
 
     const fetchArticles = async (keywords, language) =>{
         const apiKey = '2a797461e90448799c9c602abb432b4f';
@@ -8,7 +14,7 @@ export default function HomePage(){
         const twoDaysAgo = new Date();
         twoDaysAgo.setDate(today.getDate() - 2);
     
-        const title = document.getElementById('article-title');
+        // const title = document.getElementById('article-title');
     
     
         // Convert the dates to 'YYYY-MM-DD' format
@@ -23,7 +29,6 @@ export default function HomePage(){
         const twoDaysAgoISO = formatDate(twoDaysAgo);
     
     
-        console.log("Fetching news...");
         // Define query parameters
         var url = 'https://newsapi.org/v2/everything?' +
                 'q=' +keywords+
@@ -39,18 +44,13 @@ export default function HomePage(){
         let a = await fetch(req)
         let response = await a.json()
         console.log(response);
-        
-        title.innerHTML = response.articles[0].title;
-    
-        for(let item in response.articles){
-            //title.innerHTML = item.title;
-        }
     
     }
 
+
+
     return (
         <>
-        <h1>homePage</h1>
         <SideBar></SideBar>
         </>
     );
