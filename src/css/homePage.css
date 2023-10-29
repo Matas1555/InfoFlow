@@ -1,6 +1,6 @@
 .List {
   position: relative;
-  max-height: 67vh;
+  max-height: 63vh;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   background: #fff;
@@ -18,7 +18,7 @@
 
 .Item {
   position: relative;
-  padding: 20px 0px;
+  /* padding: 20px 0px; */
   text-align: center;
   display: flex;
   justify-content: center;

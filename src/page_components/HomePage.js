@@ -7,10 +7,11 @@ import "../css/homePage.css";
 export default function HomePage() {
   const [articles, setArticles] = useState([]);
   const [page, setPage] = useState(1);
+  const [articleCategory, setArticleCategory] = useState("general");
 
   //Code has two fetch article functions, one fetches articles from the "top-headlines" endpoint, the other one fetches from "everything" endpoint.
   //Top headlines function is more usable, contains better articles
-  const fetchTopArticles = async (category, country) => {
+  const fetchTopArticles = async (country, category, withHistory) => {
     const apiKey = "2a797461e90448799c9c602abb432b4f";
     console.log("Fetching news...");
     // Define query parameters for "top-headlines" endpoint
@@ -29,7 +30,13 @@ export default function HomePage() {
     // Fetch the data from the API
     let a = await fetch(req);
     let response = await a.json();
-    setArticles((prevArticles) => [...prevArticles, ...response.articles]);
+
+    if (withHistory) {
+      setArticles((prevArticles) => [...prevArticles, ...response.articles]);
+    } else {
+      setArticles(response.articles);
+    }
+    console.log("fetch category: " + articleCategory);
     console.log(response);
   };
 
@@ -80,9 +87,16 @@ export default function HomePage() {
     //response.articles[0].image;
   };
 
+  //handles the string that was passed from sidebar.js
+  //uses the category in article fetching
+  const handleCategoryChange = async (category) => {
+    setArticleCategory(category);
+    fetchTopArticles("us", category, false); // Fetch new articles with the updated category
+    console.log(category);
+  };
+
   useEffect(() => {
-    //fetchArticles("sports", "en");
-    fetchTopArticles("business", "us");
+    fetchTopArticles("us", articleCategory, true);
   }, [page]);
 
   function ScrollContainer() {
@@ -130,9 +144,8 @@ export default function HomePage() {
 
   return (
     <>
-      <h1>homePage</h1>
       {ScrollContainer()}
-      <SideBar />
+      <SideBar onCategoryChange={handleCategoryChange} />
     </>
   );
 }
