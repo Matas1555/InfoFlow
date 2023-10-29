@@ -6,22 +6,20 @@ import Login from "./page_components/Login";
 import SideBar from "./page_components/SideBar";
 import NavBar from "./page_components/NavBar";
 import "./css/main.css";
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
-  return ( 
-    <> 
+  return (
+    <>
       <BrowserRouter>
-      <NavBar />
+        <NavBar />
         <Routes>
-          <Route path="/HomePage" index element={<HomePage />} />
-          <Route path="/About" element ={<About/>} />
+          <Route path="/" index element={<HomePage />} />
+          <Route path="/About" element={<About />} />
           <Route path="/Contact" element={<Contact />} />
-          <Route path="/Login" element ={<Login/>} />
+          <Route path="/Login" element={<Login />} />
         </Routes>
       </BrowserRouter>
-    
-
     </>
   );
 }

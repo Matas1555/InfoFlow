@@ -1,57 +1,138 @@
 import SideBar from "./SideBar";
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useInView } from "react-hook-inview";
+import "../css/homePage.css";
+//import ScrollContainer from "./ScrollContainer";
 
-export default function HomePage(){
+export default function HomePage() {
+  const [articles, setArticles] = useState([]);
+  const [page, setPage] = useState(1);
+
+  //Code has two fetch article functions, one fetches articles from the "top-headlines" endpoint, the other one fetches from "everything" endpoint.
+  //Top headlines function is more usable, contains better articles
+  const fetchTopArticles = async (category, country) => {
+    const apiKey = "2a797461e90448799c9c602abb432b4f";
+    console.log("Fetching news...");
+    // Define query parameters for "top-headlines" endpoint
+    var url =
+      "https://newsapi.org/v2/top-headlines?" +
+      "category=" +
+      category +
+      "&country=" +
+      country +
+      "&pageSize=100" +
+      "&apiKey=" +
+      apiKey;
+
+    var req = new Request(url);
+
+    // Fetch the data from the API
+    let a = await fetch(req);
+    let response = await a.json();
+    setArticles((prevArticles) => [...prevArticles, ...response.articles]);
+    console.log(response);
+  };
+
+  const fetchArticles = async (keywords, language) => {
+    const apiKey = "2a797461e90448799c9c602abb432b4f";
+    const today = new Date();
+    const twoDaysAgo = new Date();
+    twoDaysAgo.setDate(today.getDate() - 2);
+
+    // Converts the dates to 'YYYY-MM-DD' format
+    //This is used for the API call so it recognizes from what date to search for articles
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+
+    const todayISO = formatDate(today);
+    const twoDaysAgoISO = formatDate(twoDaysAgo);
+
+    console.log("Fetching news...");
+    // Define query parameters for "everything" endpoint
+    var url =
+      "https://newsapi.org/v2/everything?" +
+      "q=" +
+      keywords +
+      "&from=" +
+      twoDaysAgoISO +
+      "&language=" +
+      language +
+      "&sortBy=popularity&" +
+      "pageSize=100&" +
+      "apiKey=" +
+      apiKey +
+      `&timestamp=${Date.now()}`; // Add a timestamp to the query
+
+    var req = new Request(url);
+
+    // Fetch the data from the API
+    let a = await fetch(req);
+    let response = await a.json();
+    setArticles((prevArticles) => [...prevArticles, ...response.articles]);
+    console.log(response);
+
+    //Example how to acquire information from the fetches array of articles
+    //response.articles[0].title;
+    //response.articles[0].image;
+  };
+
+  useEffect(() => {
+    //fetchArticles("sports", "en");
+    fetchTopArticles("business", "us");
+  }, [page]);
+
+  function ScrollContainer() {
+    const [ref, isVisible] = useInView({
+      threshold: 0.2,
+    });
+
+    const loadMoreArticles = () => {
+      setPage(page + 1);
+    };
 
     useEffect(() => {
-        fetchArticles("sports", "en");
-        console.log("I fire once");
-     });
-
-    const fetchArticles = async (keywords, language) =>{
-        const apiKey = '2a797461e90448799c9c602abb432b4f';
-        const today = new Date();
-        const twoDaysAgo = new Date();
-        twoDaysAgo.setDate(today.getDate() - 2);
-    
-        // const title = document.getElementById('article-title');
-    
-    
-        // Convert the dates to 'YYYY-MM-DD' format
-        const formatDate = (date) => {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        };
-    
-        const todayISO = formatDate(today);
-        const twoDaysAgoISO = formatDate(twoDaysAgo);
-    
-    
-        // Define query parameters
-        var url = 'https://newsapi.org/v2/everything?' +
-                'q=' +keywords+
-                '&from=' +twoDaysAgoISO+
-                '&language='+language+
-                '&sortBy=popularity&' +
-                'pageSize=10&' + 
-                'apiKey=' + apiKey;
-    
-        var req = new Request(url);
-    
-        // Fetch the data from the API
-        let a = await fetch(req)
-        let response = await a.json()
-        console.log(response);
-    
-    }
-
-
+      if (isVisible) {
+        loadMoreArticles();
+      }
+    }, [isVisible]);
 
     return (
-        <>
-        <SideBar></SideBar>
-        </>
+      <div className="List">
+        {articles.map((article, index) => (
+          <a
+            href={article.url} // Set the URL from the article data
+            target="_blank" // Opens the link in a new tab
+            key={index}
+            className="ClickableContainer"
+          >
+            <div className="Item" key={index}>
+              <div className="ImageContainer">
+                <img
+                  src={article.urlToImage}
+                  alt={article.title}
+                  className="ResponsiveImage"
+                />
+              </div>
+              <h2 className="article-title">{article.title}</h2>
+            </div>
+          </a>
+        ))}
+        <div className="Loader" ref={ref}>
+          <i className="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+        </div>
+      </div>
     );
+  }
+
+  return (
+    <>
+      <h1>homePage</h1>
+      {ScrollContainer()}
+      <SideBar />
+    </>
+  );
 }

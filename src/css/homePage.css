@@ -1,0 +1,72 @@
+.List {
+  position: relative;
+  max-height: 67vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scrollbar-width: none;
+  width: 100vh;
+  margin-right: 0;
+  bottom: -5vh;
+  left: 50vh;
+  border-style: solid;
+  border-radius: 10px;
+}
+
+.Item {
+  position: relative;
+  padding: 20px 0px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  scroll-snap-align: start;
+  min-height: 63vh;
+  width: 100vh;
+  background: #eee;
+}
+
+.Loader {
+  position: relative;
+  width: 100vh;
+  min-height: 20vh;
+  margin-bottom: 30px;
+  display: flex;
+  background: #444;
+  scroll-snap-align: start;
+  color: #eee;
+  align-content: center;
+  align-items: center;
+  scroll-snap-align: start;
+  justify-content: center;
+}
+
+.ImageContainer {
+  width: 100%;
+  height: 100%; /* Ensure the container fills its parent */
+  overflow: hidden;
+  position: relative;
+}
+
+.ResponsiveImage {
+  width: 100%; /* Ensure the image fills its container */
+  height: 100%; /* Ensure the image fills its container */
+  object-fit: cover;
+}
+
+.article-title {
+  font-family: sans-serif;
+  position: absolute;
+  color: aliceblue;
+  font-size: 50px;
+
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+
+  right: 0; /* Align text to the right */
+  bottom: 0; /* Align text to the bottom */
+}
