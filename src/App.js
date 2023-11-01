@@ -5,6 +5,7 @@ import Contact from "./page_components/Contact";
 import Login from "./page_components/Login";
 import SideBar from "./page_components/SideBar";
 import NavBar from "./page_components/NavBar";
+import Register from "./page_components/Register";
 import "./css/main.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -15,9 +16,11 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/" index element={<HomePage />} />
+          <Route path="/HomePage" index element={<HomePage />} />
           <Route path="/About" element={<About />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/Login" element={<Login />} />
+          <Route path="/Register" element={<Register />} />
         </Routes>
       </BrowserRouter>
     </>
