@@ -15,8 +15,9 @@
 	width: 50px;
 	background-color: #4d7a9f;
 	transition: width 0.3s;
-	border-right: 10px solid #264259;
+	border-right: 10px solid #88A2AD;
 	margin-right: 0;
+	border-radius: 0px 20px 20px 0px;
 
 
 }
@@ -30,11 +31,12 @@
 	padding-left: 13px;
 	font-size: 20px;
 	color: white;
-	background-color: #1c3244;
+	background-color: #4F6D7A;
 	padding: 15px 160px 15px 10px;
 	margin: 0;
 	border: 2px solid black;
 	border-top: none;
+	border-right:none;
 
 }
 
@@ -58,7 +60,7 @@
 
 .nav_sidebar .nav_sidebar_cat li button {
 	color: #fff;
-	background-color: #264259;
+	background-color: #4F6D7A;
 	font-size: 20px;
 	cursor: pointer;
 	padding: 10px 160px 10px 10px;
@@ -71,7 +73,7 @@
 
 .nav_sidebar .nav_sidebar_logout li button {
 	color: #fff;
-	background-color: #264259;
+	background-color: #4F6D7A;
 	font-size: 20px;
 	cursor: pointer;
 	padding: 10px 160px 13px 10px;
