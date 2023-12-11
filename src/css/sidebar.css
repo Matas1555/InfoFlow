@@ -1,104 +1,89 @@
-
-.container{
-	width: 261px;
-	margin: 0;
+.container {
+  width: 0px;
+  margin: 0;
 }
 .nav_sidebar {
-	position:relative;
-	display: flex;
-	flex-direction: column;
-	margin: 0px;
-	bottom: 545px;
-	
-	left: 0px;
-	overflow: hidden;
-	width: 50px;
-	background-color: #4d7a9f;
-	transition: width 0.3s;
-	border-right: 10px solid #88A2AD;
-	margin-right: 0;
-	border-radius: 0px 20px 20px 0px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0px;
+  bottom: 0px;
 
-
+  left: 0px;
+  overflow: hidden;
+  width: 50px;
+  background-color: #4d7a9f;
+  transition: width 0.3s;
+  border-right: 10px solid #88a2ad;
+  margin-right: 0;
+  border-radius: 0px 20px 20px 0px;
 }
 
 .nav_sidebar:hover {
-	width: 261px;
-	transition: width 0.5s;
+  width: 261px;
+  transition: width 0.5s;
 }
 
 .nav_sidebar_h1 {
-	padding-left: 13px;
-	font-size: 20px;
-	color: white;
-	background-color: #4F6D7A;
-	padding: 15px 160px 15px 10px;
-	margin: 0;
-	border: 2px solid black;
-	border-top: none;
-	border-right:none;
-
+  padding-left: 13px;
+  font-size: 20px;
+  color: white;
+  background-color: #4f6d7a;
+  padding: 15px 160px 15px 10px;
+  margin: 0;
+  border: 2px solid black;
+  border-top: none;
+  border-right: none;
 }
 
 .nav_sidebar_h1 span {
-	margin-right: 15px;
+  margin-right: 15px;
 }
 
-
 .nav_sidebar ul {
-	
-	list-style: none;
-	margin: 0;
-	padding: 0;
-
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .nav_sidebar li {
-	white-space: nowrap;
-
+  white-space: nowrap;
 }
 
 .nav_sidebar .nav_sidebar_cat li button {
-	color: #fff;
-	background-color: #4F6D7A;
-	font-size: 20px;
-	cursor: pointer;
-	padding: 10px 160px 10px 10px;
-	border: none;
+  color: #fff;
+  background-color: #4f6d7a;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px 160px 10px 10px;
+  border: none;
 
-	border: 2px solid black;
-
-
+  border: 2px solid black;
 }
 
 .nav_sidebar .nav_sidebar_logout li button {
-	color: #fff;
-	background-color: #4F6D7A;
-	font-size: 20px;
-	cursor: pointer;
-	margin-top: 360px;
-	padding: 10px 160px 13px 10px;
-	border: 2px solid black;
-	
-	
+  color: #fff;
+  background-color: #4f6d7a;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 360px;
+  padding: 10px 160px 13px 10px;
+  border: 2px solid black;
 }
 
 .nav_sidebar .nav_sidebar_cat li button:active {
-	color: aqua;
+  color: aqua;
 }
 
 .nav_sidebar ul li button span {
-	margin-right: 15px;
+  margin-right: 15px;
 }
 
-.nav_sidebar_logout{
-    
-    bottom: 0;
-    left:0px;
-    
-
+.nav_sidebar_logout {
+  bottom: 0;
+  left: 0px;
 }
-.nav_sidebar ul li:hover, .nav_sidebar ul li button:hover {
-    color: rgba(0, 0, 0, 0.61); 
-    
+.nav_sidebar ul li:hover,
+.nav_sidebar ul li button:hover {
+  color: rgba(0, 0, 0, 0.61);
 }

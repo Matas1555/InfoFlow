@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function NavBar() {
   const [isPopupVisible, setPopupVisible] = useState(false);
+  const [selectedLanguage, setLanguage] = useState("en");
 
   function showPopup() {
     setPopupVisible(true);
@@ -16,9 +17,8 @@ export default function NavBar() {
 
   function getSelectedLanguage() {
     const form = document.getElementById("popup");
-    const selectedLanguage = form.querySelector(
-      'input[name="lang"]:checked'
-    ).value;
+    setLanguage(form.querySelector('input[name="lang"]:checked').value);
+    console.log(selectedLanguage);
   }
 
   function handleClick() {

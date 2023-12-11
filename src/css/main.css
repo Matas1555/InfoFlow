@@ -1,16 +1,13 @@
-
-
-
-body{
-    margin: 0;
-    overflow-x: hidden;
-    overflow-y: hidden;
+body {
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  background-color: azure;
 }
 
-#root{
-   
+#root {
 }
 
-h1{
-    text-align: center;
+h1 {
+  text-align: center;
 }

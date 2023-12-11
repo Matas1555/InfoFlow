@@ -1,6 +1,5 @@
 import "../css/sidebar.css";
 import "../assets/font-awesome/css/font-awesome.min.css";
-import HomePage from "./HomePage";
 
 export default function SideBar({ onCategoryChange }) {
   const selectCategory = (category) => {
