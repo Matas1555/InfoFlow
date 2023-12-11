@@ -8,7 +8,7 @@
 	display: flex;
 	flex-direction: column;
 	margin: 0px;
-	bottom: 50vh;
+	bottom: 545px;
 	
 	left: 0px;
 	overflow: hidden;
@@ -76,6 +76,7 @@
 	background-color: #4F6D7A;
 	font-size: 20px;
 	cursor: pointer;
+	margin-top: 360px;
 	padding: 10px 160px 13px 10px;
 	border: 2px solid black;
 	

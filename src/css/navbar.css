@@ -46,8 +46,9 @@ a {
   text-decoration: none;
   color: white;
   font-size: 25px;
-  background-color: #4A6FA5;
+  background-color: #166088;
   padding: 20px 30px 20px 30px;
+  margin-left: 5px;
   
 }
 
@@ -86,7 +87,7 @@ a {
 .popup {
   position: absolute;
   top:70px;
-  left: 562px;
+  left: 553.9px;
   z-index: 100;
   border: black;
   padding-right: 44.6px;
@@ -112,7 +113,7 @@ button.button.button-dark{
   text-decoration: none;
   color: white;
   font-size: 25px;
-  background-color: #4A6FA5;
+  background-color: #166088;
   padding: 20px 30px 20px 30px;
   border:none;
   border-radius: 30px 30px 0px 0px;
