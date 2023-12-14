@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "../css/navbar.css";
 import InfoFlowIcon from "../assets/LOGO.png";
+
 import { Link } from "react-router-dom";
 
-export default function NavBar() {
+export default function NavBar({ onLanguageChange }) {
   const [isPopupVisible, setPopupVisible] = useState(false);
-  const [selectedLanguage, setLanguage] = useState("en");
 
   function showPopup() {
     setPopupVisible(true);
@@ -17,7 +17,10 @@ export default function NavBar() {
 
   function getSelectedLanguage() {
     const form = document.getElementById("popup");
-    setLanguage(form.querySelector('input[name="lang"]:checked').value);
+    const selectedLanguage = form.querySelector(
+      'input[name="lang"]:checked'
+    ).value;
+    onLanguageChange(selectedLanguage);
     console.log(selectedLanguage);
   }
 

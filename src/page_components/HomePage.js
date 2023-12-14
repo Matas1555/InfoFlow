@@ -1,4 +1,5 @@
 import SideBar from "./SideBar";
+import NavBar from "./NavBar";
 import { useEffect, useState } from "react";
 import { useInView } from "react-hook-inview";
 import "../css/homePage.css";
@@ -104,6 +105,7 @@ export default function HomePage() {
   const handleLanguageChange = async (language) => {
     setArticleCLanguage(language);
     fetchTopArticles(language, articleCategory, false);
+    console.log(language);
   };
 
   useEffect(() => {
@@ -155,6 +157,7 @@ export default function HomePage() {
 
   return (
     <>
+      <NavBar onLanguageChange={handleLanguageChange} />
       <div className="HomePageContainer">
         <SideBar onCategoryChange={handleCategoryChange} />
         {ScrollContainer()}

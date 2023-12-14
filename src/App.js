@@ -9,22 +9,62 @@ import Register from "./page_components/Register";
 import "./css/main.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-function App() {
+// Higher-order component to include NavBar for all routes except HomePage
+const App = () => {
   return (
-    <>
-      <BrowserRouter>
-        <NavBar />
-        <Routes>
-          <Route path="/" index element={<HomePage />} />
-          <Route path="/HomePage" index element={<HomePage />} />
-          <Route path="/About" element={<About />} />
-          <Route path="/Contact" element={<Contact />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Register" element={<Register />} />
-        </Routes>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <NavBar />
+              {/* <Route path="/HomePage" index element={<HomePage />} /> */}
+            </>
+          }
+        />
+        <Route
+          path="/HomePage"
+          element={
+            <>
+              <HomePage />
+            </>
+          }
+        />
+        <Route
+          path="/About"
+          element={
+            <>
+              <NavBar />
+              <About />
+            </>
+          }
+        />
+        <Route
+          path="/Contact"
+          element={
+            <>
+              <NavBar />
+              <Contact />
+            </>
+          }
+        />
+        <Route
+          path="/Login"
+          element={
+            <>
+              <NavBar />
+              <Login />
+            </>
+          }
+        />
+        {/* <Route path="/About" element={<About />} /> */}
+        {/* <Route path="/Contact" element={<Contact />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Register" element={<Register />} /> */}
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
