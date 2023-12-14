@@ -87,10 +87,10 @@ a {
 .popup {
   position: absolute;
   top:70px;
-  left: 553.9px;
+  left: 538px;
   z-index: 100;
   border: black;
-  padding-right: 44.6px;
+  padding-right: 8px;
   background-color: #DBE9EE;
   border:solid 1px black;
   border-radius: 0px 0px 40px 40px;
@@ -129,7 +129,7 @@ button.button.button-dark:hover{
 .popup button{
   transition: all 0.3s ease 0s;
   background-color: #C0D6DF;
-  width: 126%;
+  width: 104%;
   border:none;
   border-top: solid 1px black;
   margin-top: 10px;
@@ -143,3 +143,4 @@ button.button.button-dark:hover{
   color:rgb(176, 171, 171);
   background-color: rgb(61, 85, 85);
 }
+
