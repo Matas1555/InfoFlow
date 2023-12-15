@@ -18,43 +18,43 @@ export default function SideBar({ onCategoryChange }) {
           </li>
           <li>
             <button onClick={() => selectCategory("general")}>
-              <i className="fa fa-bell fa-lg" aria-hidden="true"></i>{" "}
+              <i className="fa fa-users fa-lg" aria-hidden="true"></i>{" "}
               <span></span> General
             </button>
           </li>
           <li>
             <button onClick={() => selectCategory("entertainment")}>
-              <i className="fa fa-bell fa-lg" aria-hidden="true"></i>{" "}
+              <i className="fa fa-television fa-lg" aria-hidden="true"></i>{" "}
               <span></span> Entertainment
             </button>
           </li>
           <li>
             <button onClick={() => selectCategory("business")}>
-              <i className="fa fa-bell fa-lg" aria-hidden="true"></i>{" "}
+              <i className="fa fa-briefcase fa-lg" aria-hidden="true"></i>{" "}
               <span></span> Business
             </button>
           </li>
           <li>
             <button onClick={() => selectCategory("health")}>
-              <i className="fa fa-bell fa-lg" aria-hidden="true"></i>{" "}
+              <i className="fa fa-medkit fa-lg" aria-hidden="true"></i>{" "}
               <span></span> Health
             </button>
           </li>
           <li>
             <button onClick={() => selectCategory("science")}>
-              <i className="fa fa-bell fa-lg" aria-hidden="true"></i>{" "}
+              <i className="fa fa-flask fa-lg" aria-hidden="true"></i>{" "}
               <span></span> Science
             </button>
           </li>
           <li>
             <button onClick={() => selectCategory("sports")}>
-              <i className="fa fa-bell fa-lg" aria-hidden="true"></i>{" "}
+              <i className="fa fa-trophy fa-lg" aria-hidden="true"></i>{" "}
               <span></span> Sports
             </button>
           </li>
           <li>
             <button onClick={() => selectCategory("technology")}>
-              <i className="fa fa-bell fa-lg" aria-hidden="true"></i>{" "}
+              <i className="fa fa-cog fa-lg" aria-hidden="true"></i>{" "}
               <span></span> Technology
             </button>
           </li>

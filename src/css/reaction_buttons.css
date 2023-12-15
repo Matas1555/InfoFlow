@@ -1,0 +1,7 @@
+.ReactionButtons{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  left:400px;
+  top:400px;
+}

@@ -1,5 +1,6 @@
 import SideBar from "./SideBar";
 import NavBar from "./NavBar";
+import ReactionButtons from "../page_components/Reaction_buttons"; 
 import { useEffect, useState } from "react";
 import { useInView } from "react-hook-inview";
 import "../css/homePage.css";
@@ -161,7 +162,10 @@ export default function HomePage() {
       <div className="HomePageContainer">
         <SideBar onCategoryChange={handleCategoryChange} />
         {ScrollContainer()}
+        <ReactionButtons />
       </div>
     </>
   );
+
+  
 }
