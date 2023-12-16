@@ -1,6 +1,6 @@
 import SideBar from "./SideBar";
 import NavBar from "./NavBar";
-import ReactionButtons from "../page_components/Reaction_buttons"; 
+import ReactionButtons from "../page_components/Reaction_buttons";
 import { useEffect, useState } from "react";
 import { useInView } from "react-hook-inview";
 import "../css/homePage.css";
@@ -10,7 +10,7 @@ export default function HomePage() {
   const [articles, setArticles] = useState([]);
   const [page, setPage] = useState(1);
   const [articleCategory, setArticleCategory] = useState("general");
-  const [articleLanguage, setArticleCLanguage] = useState("en");
+  const [articleLanguage, setArticleCLanguage] = useState("us");
 
   //Code has two fetch article functions, one fetches articles from the "top-headlines" endpoint, the other one fetches from "everything" endpoint.
   //Top headlines function is more usable, contains better articles
@@ -111,7 +111,7 @@ export default function HomePage() {
 
   useEffect(() => {
     fetchTopArticles("us", articleCategory, true);
-  }, [page]);
+  }, []);
 
   function ScrollContainer() {
     const [ref, isVisible] = useInView({
@@ -120,6 +120,7 @@ export default function HomePage() {
 
     const loadMoreArticles = () => {
       setPage(page + 1);
+      fetchTopArticles(articleLanguage, articleCategory, true);
     };
 
     useEffect(() => {
@@ -129,30 +130,54 @@ export default function HomePage() {
     }, [isVisible]);
 
     return (
-      <div className="List">
-        {articles.map((article, index) => (
-          <a
-            href={article.url} // Set the URL from the article data
-            target="_blank" // Opens the link in a new tab
-            key={index}
-            className="ClickableContainer"
-          >
-            <div className="Item" key={index}>
-              <div className="ImageContainer">
-                <img
-                  src={article.urlToImage}
-                  alt={article.title}
-                  className="ResponsiveImage"
-                />
+      <>
+        <div className="List">
+          {articles.map((article, index) => (
+            <a
+              href={article.url} // Set the URL from the article data
+              target="_blank" // Opens the link in a new tab
+              key={index}
+              className="ClickableContainer"
+            >
+              {/* <div
+                className={`${
+                  article.urlToImage ? "WithImage" : "WithoutImage"
+                }`}
+                key={index}
+              > */}
+              <div className="Item" key={index}>
+                <div className="ImageContainer">
+                  <img
+                    src={article.urlToImage}
+                    alt={article.description}
+                    className="ResponsiveImage"
+                  />
+                </div>
+                <div className="articleInfo">
+                  <h1 className="article-author">{article.author}</h1>
+                  <h2 className="article-title">{article.title}</h2>
+                  <div className="article-bottom">
+                    <h1 className="article-source">{article.source.name}</h1>
+                    <h1 className="article-publishedAt">
+                      {
+                        new Date(article.publishedAt)
+                          .toISOString()
+                          .split("T")[0]
+                      }
+                    </h1>
+                  </div>
+                </div>
               </div>
-              <h2 className="article-title">{article.title}</h2>
-            </div>
-          </a>
-        ))}
-        <div className="Loader" ref={ref}>
-          <i className="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+              {/* </div> */}
+            </a>
+          ))}
+
+          <div className="Loader" ref={ref}>
+            <i className="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+          </div>
         </div>
-      </div>
+        <ReactionButtons />
+      </>
     );
   }
 
@@ -162,10 +187,7 @@ export default function HomePage() {
       <div className="HomePageContainer">
         <SideBar onCategoryChange={handleCategoryChange} />
         {ScrollContainer()}
-        <ReactionButtons />
       </div>
     </>
   );
-
-  
 }

@@ -44,40 +44,40 @@ export default function NavBar({ onLanguageChange }) {
           <form className="popup" id="popup">
             <p>Please select your country:</p>
             <input type="radio" name="lang" id="ar" value="ar" />
-            <label htmlFor="ar">Arabic &#128514; </label>
+            <label htmlFor="ar">Saudi arabia &#128514; </label>
             <br />
             <input type="radio" name="lang" id="de" value="de" />
-            <label htmlFor="de">German 🇩🇪 </label>
+            <label htmlFor="de">Germany 🇩🇪 </label>
             <br />
-            <input type="radio" name="lang" id="en" value="en" />
-            <label htmlFor="en">English 🇬🇧 </label>
+            <input type="radio" name="lang" id="us" value="us" />
+            <label htmlFor="us">United States </label>
             <br />
             <input type="radio" name="lang" id="es" value="es" />
-            <label htmlFor="es">Spanish 🇪🇸 </label>
+            <label htmlFor="es">Spain 🇪🇸 </label>
             <br />
             <input type="radio" name="lang" id="fr" value="fr" />
-            <label htmlFor="fr">French 🇫🇷 </label>
+            <label htmlFor="fr">France 🇫🇷 </label>
             <br />
             <input type="radio" name="lang" id="he" value="he" />
-            <label htmlFor="he">Hebrew 🇮🇱 </label>
+            <label htmlFor="he">Isreal 🇮🇱 </label>
             <br />
             <input type="radio" name="lang" id="it" value="it" />
-            <label htmlFor="it">Italian 🇮🇹 </label>
+            <label htmlFor="it">Italy 🇮🇹 </label>
             <br />
             <input type="radio" name="lang" id="nl" value="nl" />
-            <label htmlFor="nl">Dutch 🇳🇱 </label>
+            <label htmlFor="nl">Netherlands 🇳🇱 </label>
             <br />
             <input type="radio" name="lang" id="no" value="no" />
-            <label htmlFor="no">Norwegian 🇳🇴 </label>
+            <label htmlFor="no">Norway 🇳🇴 </label>
             <br />
             <input type="radio" name="lang" id="pt" value="pt" />
-            <label htmlFor="pt">Portuguese 🇵🇹 </label>
+            <label htmlFor="pt">Portugal 🇵🇹 </label>
             <br />
             <input type="radio" name="lang" id="ru" value="ru" />
-            <label htmlFor="ru">Russian 🇷🇺 </label>
+            <label htmlFor="ru">Russia 🇷🇺 </label>
             <br />
             <input type="radio" name="lang" id="sv" value="sv" />
-            <label htmlFor="sv">Swedish 🇸🇪 </label>
+            <label htmlFor="sv">Sweden 🇸🇪 </label>
             <br />
             <button onClick={() => handleClick()}>Submit</button>
           </form>

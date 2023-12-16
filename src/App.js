@@ -18,7 +18,8 @@ const App = () => {
           path="/"
           element={
             <>
-              <NavBar />
+              {/* <NavBar /> */}
+              <HomePage />
               {/* <Route path="/HomePage" index element={<HomePage />} /> */}
             </>
           }
