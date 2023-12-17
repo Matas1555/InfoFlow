@@ -170,52 +170,54 @@ export default function HomePage() {
 
     return (
       <>
-        <div className="List">
-          {articles.map((article, index) => (
-            <a
-              href={article.url} // Set the URL from the article data
-              target="_blank" // Opens the link in a new tab
-              key={index}
-              className="ClickableContainer"
-            >
-              {/* <div
+        <div className="whole-container">
+          <div className="List">
+            {articles.map((article, index) => (
+              <a
+                href={article.url} // Set the URL from the article data
+                target="_blank" // Opens the link in a new tab
+                key={index}
+                className="ClickableContainer"
+              >
+                {/* <div
                 className={`${
                   article.urlToImage ? "WithImage" : "WithoutImage"
                 }`}
                 key={index}
               > */}
-              <div className="Item" key={index}>
-                <div className="ImageContainer">
-                  <img
-                    src={article.urlToImage}
-                    alt={article.description}
-                    className="ResponsiveImage"
-                  />
-                </div>
-                <div className="articleInfo">
-                  <h1 className="article-author">{article.author}</h1>
-                  <h2 className="article-title">{article.title}</h2>
-                  <div className="article-bottom">
-                    <h1 className="article-source">{article.source.name}</h1>
-                    <h1 className="article-publishedAt">
-                      {
-                        new Date(article.publishedAt)
-                          .toISOString()
-                          .split("T")[0]
-                      }
-                    </h1>
+                <div className="Item" key={index}>
+                  <div className="ImageContainer">
+                    <img
+                      src={article.urlToImage}
+                      alt={article.description}
+                      className="ResponsiveImage"
+                    />
+                  </div>
+                  <div className="articleInfo">
+                    <h1 className="article-author">{article.author}</h1>
+                    <h2 className="article-title">{article.title}</h2>
+                    <div className="article-bottom">
+                      <h1 className="article-source">{article.source.name}</h1>
+                      <h1 className="article-publishedAt">
+                        {
+                          new Date(article.publishedAt)
+                            .toISOString()
+                            .split("T")[0]
+                        }
+                      </h1>
+                    </div>
                   </div>
                 </div>
-              </div>
-              {/* </div> */}
-            </a>
-          ))}
+                {/* </div> */}
+              </a>
+            ))}
 
-          <div className="Loader" ref={ref}>
-            <i className="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+            <div className="Loader" ref={ref}>
+              <i className="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+            </div>
           </div>
+          <ReactionButtons />
         </div>
-        <ReactionButtons />
       </>
     );
   }

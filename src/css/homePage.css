@@ -1,3 +1,12 @@
+.whole-container {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top: 0%;
+  left: 25%;
+  height: 80vh;
+}
+
 .List {
   position: relative;
   max-height: 80vh;
@@ -10,8 +19,8 @@
   scrollbar-width: none;
   width: 90vh;
   margin-right: 0;
-  bottom: 1vh;
-  left: 40vh;
+  /* bottom: 1vh; */
+  /* left: 40vh; */
   border-style: solid;
   z-index: 1;
   /* border-radius: 10px; */

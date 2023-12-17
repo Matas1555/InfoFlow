@@ -2,17 +2,17 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 100px;
-  left: 450px;
-  top: 120px;
+  gap: 11vh;
+  left: 2vh;
+  top: 5vh;
 }
 
 /* https://uiverse.io/andrew-demchenk0/itchy-donkey-64 */
 .ReactionButtons {
   --bg-color: #fff;
   --main-color: #323232;
-  width: 80px;
-  height: 80px;
+  width: 9vh;
+  height: 9vh;
   border-radius: 100%;
   border: 2px solid var(--main-color);
   background-color: var(--bg-color);
