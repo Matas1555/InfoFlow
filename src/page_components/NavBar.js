@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/navbar.css";
 import InfoFlowIcon from "../assets/LOGO.png";
+import dafaultProfilePhoto from "../assets/default_profile.png";
 
 import { Link } from "react-router-dom";
+import { auth } from "../App";
+import { database } from "../App";
+import { ref, set, update, onValue } from "firebase/database";
+import Profile from "./Profile";
 
 export default function NavBar({ onLanguageChange }) {
   const [isPopupVisible, setPopupVisible] = useState(false);
+  const [avatar, setAvatar] = useState("");
 
   function showPopup() {
     setPopupVisible(true);
@@ -28,6 +34,39 @@ export default function NavBar({ onLanguageChange }) {
     hidePopup();
     getSelectedLanguage();
   }
+
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+
+    //Getting data from realtime database
+    if (user !== null) {
+      const avatarRef = ref(database, "/users/" + user.uid);
+
+      onValue(
+        avatarRef,
+        (snapshot) => {
+          const user = snapshot.val();
+          if (user.avatar === "") {
+            setAvatar(dafaultProfilePhoto);
+            console.log(avatar);
+          }
+        },
+        {
+          onlyOnce: true,
+        }
+      );
+    }
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="nav_bar_wrapper">
@@ -98,9 +137,13 @@ export default function NavBar({ onLanguageChange }) {
               </Link>
             </li>
             <li>
-              <Link to="/Login">
-                <div className="nav_about">Login</div>
-              </Link>
+              {user ? (
+                <Profile />
+              ) : (
+                <Link to="/Login">
+                  <div className="nav_about">Login</div>
+                </Link>
+              )}
             </li>
           </ul>
         </nav>

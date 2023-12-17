@@ -4,6 +4,11 @@ import ReactionButtons from "../page_components/Reaction_buttons";
 import { useEffect, useState } from "react";
 import { useInView } from "react-hook-inview";
 import "../css/homePage.css";
+import { database } from "../App";
+import { db } from "../App";
+import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+
+const { v4: uuidv4 } = require("uuid");
 // import ScrollContainer from "./ScrollContainer";
 
 export default function HomePage() {
@@ -25,18 +30,52 @@ export default function HomePage() {
       "&country=" +
       country +
       "&pageSize=100" +
+      "from=" +
+      Date.now() +
+      "to=" +
+      Date.now() +
       "&apiKey=" +
       apiKey;
 
-    var req = new Request(url);
-
     // Fetch the data from the API
-    let a = await fetch(req);
-    let response = await a.json();
+    // var req = new Request(url);
+    // let a = await fetch(req);
+    // let response = await a.json();
+
+    //Uncomment if you get response.articles is undifined error
+    let response = [];
+    response.articles = [];
+
+    // for (let article of response.articles) {
+    //   const date = article.datePublished; // get the date
+
+    //   const id = uuidv4();
+
+    //   // // Create a new document for the date in the articles collection
+    //   // const dateRef = doc(collection(db, "articles"));
+    //   // console.log(dateRef);
+
+    //   // // Check if the document already exists
+    //   // const doc = await dateRef.get();
+
+    //   // // Create a new subcollection for the articles and add the article to it
+    //   // const articleRef = dateRef.collection("articles").doc(id);
+    //   // articleRef.set(article);
+    // }
+
+    response.articles.forEach(async (article, index) => {
+      await setDoc(doc(db, "articleExample", `article${index}`), article);
+    });
 
     //Remove all articles that are empty
     let filteredArticles = response.articles.filter(
       (article) => article.title !== "[Removed]"
+    );
+
+    // Remove duplicate articles based on URL
+    filteredArticles = filteredArticles.filter(
+      (article, index, self) =>
+        index === self.findIndex((t) => t.url === article.url)
     );
 
     //Depending on the situation, we can choose if the user can view articles that they scrolled by before
@@ -110,7 +149,7 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    fetchTopArticles("us", articleCategory, true);
+    fetchTopArticles("us", articleCategory, false);
   }, []);
 
   function ScrollContainer() {

@@ -139,3 +139,10 @@ button.button.button-dark:hover {
   color: rgb(176, 171, 171);
   background-color: rgb(61, 85, 85);
 }
+
+.profilePhoto {
+  margin: 10px;
+  bottom: 0px;
+  width: 80px;
+  height: 80px;
+}

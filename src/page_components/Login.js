@@ -1,11 +1,17 @@
 import "../css/login.css";
 import { auth } from "../App";
 import { database } from "../App";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { ref, set, update } from "firebase/database";
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 
 export default function Login() {
+  const navigate = useNavigate();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const usernameRef = useRef(null);
@@ -18,8 +24,23 @@ export default function Login() {
     const email = emailRefLogIn.current.value;
     const password = passwordRefLogIn.current.value;
 
-    console.log(email);
-    console.log(password);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        var userID = auth.currentUser;
+
+        // A post entry.
+        const postData = {
+          lastLogin: Date.now(),
+        };
+
+        console.log("logged in!");
+        navigate("/");
+        return update(ref(database, "users/" + userID.uid), postData);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err);
+      });
   };
 
   const handleSignUp = async () => {
@@ -43,7 +64,7 @@ export default function Login() {
       return;
     }
 
-    if (repeatPassword != password) {
+    if (repeatPassword !== password) {
       console.log("Passwords do not match!");
       return;
     }
@@ -59,12 +80,22 @@ export default function Login() {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed up
         console.log(userCredential.user);
-        // ...
+
+        var userID = auth.currentUser;
+
+        set(ref(database, "users/" + userID.uid), {
+          email: email,
+          username: userName,
+          avatar: "",
+          lastLogin: Date.now(),
+        });
+
+        alert("User created!");
       })
       .catch((err) => {
         console.log(err);
+        alert(err);
       });
   };
 
