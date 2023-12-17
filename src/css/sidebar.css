@@ -14,9 +14,10 @@
   overflow: hidden;
   width: 60px;
   height: 100%;
-  background-color: #4d7a9f;
+  background-color: #232323;
   transition: width 0.3s;
-  border-right: 10px solid #88a2ad;
+  border-right: 7px solid #616161;
+  opacity: 0.8;
   margin-right: 0;
 }
 
@@ -29,7 +30,7 @@
   padding-left: 13px;
   font-size: 20px;
   color: white;
-  background-color: #4f6d7a;
+  background-color: #232323;
   padding: 15px 160px 15px 10px;
   margin: 0;
   /* border: 2px solid black; */
@@ -53,18 +54,19 @@
 
 .nav_sidebar .nav_sidebar_cat li button {
   color: #fff;
-  background-color: #4f6d7a;
+  background-color: #232323;
   font-size: 20px;
   cursor: pointer;
   padding: 10px 160px 10px 10px;
   border: none;
+  margin-top: 7px;
 
   /* border: 2px solid black; */
 }
 
 .nav_sidebar .nav_sidebar_logout li button {
   color: #fff;
-  background-color: #4f6d7a;
+  background-color: #232323;
   font-size: 20px;
   cursor: pointer;
   margin-top: 390px;
@@ -86,5 +88,5 @@
 }
 .nav_sidebar ul li:hover,
 .nav_sidebar ul li button:hover {
-  color: rgba(0, 0, 0, 0.61);
+  color: rgba(113, 113, 113, 0.61);
 }

@@ -2,7 +2,9 @@ body {
   margin: 0;
   overflow-x: hidden;
   overflow-y: hidden;
-  background-color: azure;
+  
+  background-image: url("../assets/newspaper.jpg");
+  
 }
 
 #root {
