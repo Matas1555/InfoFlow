@@ -170,6 +170,7 @@ export default function HomePage() {
 
     return (
       <>
+      <div className="background-container">
         <div className="whole-container">
           <div className="List">
             {articles.map((article, index) => (
@@ -208,8 +209,10 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
+                
                 {/* </div> */}
               </a>
+              
             ))}
 
             <div className="Loader" ref={ref}>
@@ -217,6 +220,7 @@ export default function HomePage() {
             </div>
           </div>
           <ReactionButtons />
+        </div>
         </div>
       </>
     );
