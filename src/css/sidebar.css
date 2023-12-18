@@ -4,7 +4,6 @@
   margin: 0;
 }
 .nav_sidebar {
-  
   position: relative;
   display: flex;
   flex-direction: column;
@@ -28,7 +27,7 @@
 }
 
 .nav_sidebar_h1 {
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   padding-left: 13px;
   font-size: 20px;
   color: white;
@@ -55,7 +54,7 @@
 }
 
 .nav_sidebar .nav_sidebar_cat li button {
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   color: #fff;
   background-color: #232323;
   font-size: 20px;

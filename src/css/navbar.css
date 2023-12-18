@@ -1,3 +1,7 @@
+.nav_bar_wrapper {
+  z-index: 100;
+}
+
 header {
   display: flex;
   justify-content: space-between;
@@ -43,7 +47,7 @@ a {
   text-decoration: none;
 }
 .nav_bar li div {
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   transition: all 0.3s ease 0s;
   text-decoration: none;
   color: white;
@@ -86,14 +90,14 @@ a {
 
 /*POPUP WINDOW*/
 .popup {
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   position: absolute;
   top: 70px;
   left: 553.9px;
   z-index: 100;
   border: black;
   padding-right: 44.6px;
-  color:white;
+  color: white;
   background-color: #3e3e3e;
   border-radius: 0px 0px 40px 40px;
   border-bottom: none;
@@ -110,7 +114,7 @@ a {
   z-index: 10;
 }
 button.button.button-dark {
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   transition: all 0.3s ease 0s;
   text-decoration: none;
   color: white;
@@ -126,7 +130,6 @@ button.button.button-dark:hover {
   background-color: #232323;
 }
 .popup button {
-  
   transition: all 0.3s ease 0s;
   background-color: #4d4d4d;
   width: 126%;
