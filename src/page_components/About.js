@@ -9,24 +9,24 @@ const pageVariantsAboutPage = {
   initial: {
     opacity: 0,
     y: "100%",
-    scale: 0.8,
+    scale: 1,
   },
   in: {
     opacity: 1,
-    y: 0,
+    y: 1,
     scale: 1,
   },
   out: {
     opacity: 0,
-    y: "-100%",
-    scale: 1.2,
+    y: "100%",
+    scale: 0.8,
   },
 };
 
 const pageTransition = {
-  duration: 0.8,
+  duration: 0.6,
   type: "linear",
-  ease: "anticipate",
+  ease: "easeIn",
 };
 
 const About = () => {

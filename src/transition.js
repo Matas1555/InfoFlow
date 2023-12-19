@@ -14,7 +14,7 @@ const pageVariants = {
   out: {
     opacity: 0,
     x: "-100vh",
-    scale: 1.2,
+    scale: 1,
   },
 };
 
@@ -37,7 +37,7 @@ const pageVariantsAboutPage = {
 };
 
 const pageTransition = {
-  duration: 0.8,
+  duration: 0.6,
   type: "linear",
   ease: "anticipate",
 };

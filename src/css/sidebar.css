@@ -1,24 +1,25 @@
 .container {
+  position: relative;
+
   width: 0px;
-  height: 100%;
+  height: 100vh;
   margin: 0;
   transform: none !important;
 }
 .nav_sidebar {
   position: relative;
+  right: 0;
+  top: 0;
   display: flex;
   flex-direction: column;
-  margin: 0px;
-  bottom: 0px;
-  top: -90px;
-  left: 0px;
+  /* top: -90px; */
+  /* left: 0px; */
   overflow: hidden;
   width: 60px;
-  height: 100%;
-  background-color: #343a40;
+  height: 93.5vh;
+  background-color: #212529;
   transition: width 0.3s;
-  border-right: 7px solid #616161;
-  opacity: 0.8;
+  border-right: 7px solid rgba(73, 80, 87, 0.5);
   margin-right: 0;
 }
 
@@ -57,24 +58,31 @@
 .nav_sidebar .nav_sidebar_cat li button {
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   color: #fff;
-  background-color: #343a40;
+  background-color: #212529;
   font-size: 20px;
   cursor: pointer;
-  padding: 10px 160px 10px 10px;
-  border: none;
-  margin-top: 7px;
 
+  /* width: 100%; */
+  border: none;
+  /* margin-top: 7px;
+  margin-bottom: 7px; */
+  margin-right: 4%;
+  padding: 10px 160px 10px 13px;
   /* border: 2px solid black; */
 }
-
-.nav_sidebar .nav_sidebar_logout li button {
+.nav_sidebar .nav_sidebar_cat li .nav_sidebar_logout_button {
   color: #fff;
-  background-color: #232323;
+  background-color: #212529;
   font-size: 20px;
   cursor: pointer;
-  margin-top: 390px;
+  /* margin-top: 35vh; */
+
+  /* border: 2px solid black; */
   padding: 10px 160px 13px 10px;
-  border: 2px solid black;
+}
+
+.nav_sidebar .nav_sidebar_cat li .nav_sidebar_logout_button:hover {
+  background-color: rgba(73, 80, 87, 0.1);
 }
 
 .nav_sidebar .nav_sidebar_cat li button:active {
@@ -85,13 +93,14 @@
   margin-right: 15px;
 }
 
-.nav_sidebar_logout {
+/* .nav_sidebar_logout {
   bottom: 0;
   left: 0px;
-}
-.nav_sidebar ul li:hover,
+} */
+
 .nav_sidebar ul li button:hover {
-  color: rgba(113, 113, 113, 0.61);
+  background-color: rgba(73, 80, 87, 0.5);
+  cursor: pointer;
 }
 .center {
   display: flex;
@@ -100,23 +109,26 @@
   width: 100%;
   height: 100%;
   transform: translateY(50%);
+  border-bottom: 1px solid rgba(222, 226, 230, 0.2);
+  /* padding-bottom: 100px; */
 }
 
 .container {
   align-items: center;
   justify-content: center;
-  
+  height: 200px;
   display: block;
   min-width: 231.5px;
   width: 80%;
   max-width: 300px;
   transform: none !important;
+  padding-bottom: 50px;
 }
 
 .setting-description {
-  background-color: #1c2028; 
+  background-color: rgba(73, 80, 87, 0.5);
   border-radius: 15px 15px 0px 0px;
-  
+
   min-width: 231.5px;
   width: 80%;
   max-width: 483px;
@@ -124,31 +136,29 @@
 
 h10 {
   font-size: 12px;
-  margin-left: 5px ;
+  margin-left: 5px;
   letter-spacing: 0.8px;
-  font-family: Arial 
+  font-family: Arial;
 }
 
 .setting-description-text {
-  
-  padding-top: 18px ;
-  color: #F8F9FA;
+  padding-top: 18px;
+  color: #f8f9fa;
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
-
 
 .wrapper-dropdown {
   position: relative;
   display: inline-block;
   min-width: 231.5px;
-  width: 80%; 
+  width: 80%;
   max-width: 483px;
   padding: 0px 0px 0px 0px;
   min-height: 44px;
   border-radius: 0px 0px 15px 15px;
-  background: #212529;
+  background: rgba(73, 80, 87, 0.5);
   text-align: left;
-  color: #F8F9FA;
+  color: #f8f9fa;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -156,8 +166,8 @@ h10 {
   user-select: none;
   margin-bottom: 20px;
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  border-bottom: 1px solid rgba(222, 226, 230, 0.2);
 }
-
 
 .scrollable-menu {
   height: auto;
@@ -166,7 +176,6 @@ h10 {
 }
 
 .arrow {
-  
   float: right;
   rotate: 180deg;
 }
@@ -243,7 +252,7 @@ svg {
 }
 
 .wrapper-dropdown .dropdown li:hover {
-  background-color: rgb(35, 40, 49);
+  background-color: #212529;
   border-radius: 10px;
 }
 
@@ -264,7 +273,7 @@ svg {
 }
 
 .dropdown::-webkit-scrollbar-track {
-  background-color: #CED4DA;
+  background-color: #ced4da;
 }
 
 .dropdown::-webkit-scrollbar-thumb {
@@ -273,4 +282,20 @@ svg {
 
 .wrapper-dropdown {
   transform: none !important;
+}
+
+.category_buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  border-top: 1px solid rgba(222, 226, 230, 0.2);
+  border-bottom: 1px solid rgba(222, 226, 230, 0.2);
+  padding: 10px 0px 10px 0px;
+
+  align-items: baseline;
+}
+
+.nav_sidebar_cat {
+  display: flex;
+  flex-direction: column;
 }

@@ -1,6 +1,7 @@
 import "../css/reaction_buttons.css";
+import { useState } from "react";
 
-const ReactionButtons = () => {
+const ReactionButtons = ({ setCommentWindowVisible }) => {
   const handleLike = () => {
     // Handle the like action
     console.log("Liked!");
@@ -11,8 +12,7 @@ const ReactionButtons = () => {
     console.log("Disliked!");
   };
   const handleComment = () => {
-    // Handle the comment action
-    console.log("Comment");
+    setCommentWindowVisible(true);
   };
   const handleShare = () => {
     // Handle the share action

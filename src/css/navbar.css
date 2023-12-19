@@ -8,8 +8,8 @@ header {
   width: 100%;
   height: 70px;
   align-items: center;
-  background-color: #343a40;
-  box-shadow: 0px 10px 20px #4b4b4b;
+  background-color: #212529;
+  /* box-shadow: 0px 10px 20px #4b4b4b; */
 }
 
 a {
@@ -52,20 +52,20 @@ a {
   text-decoration: none;
   color: white;
   font-size: 25px;
-  background-color: #343a40;
+  background-color: #212529;
   padding: 20px 30px 20px 30px;
   margin-left: 5px;
 }
 
 .nav_bar li div:hover {
   color: rgb(192, 188, 188);
-  background-color: #2b2b2b;
+  background-color: #212529;
   padding: 20px 50px 20px 50px;
 }
 
 .nav_bar li div:active {
   color: rgb(165, 164, 164);
-  background-color: #232323;
+  background-color: #212529;
   padding: 15px 50px 15px 50px;
 }
 
@@ -74,7 +74,7 @@ a {
   text-decoration: none;
   color: white;
   font-size: 20px;
-  background-color: #343a40;
+  background-color: #212529;
   border-radius: 15px 50px;
   padding: 15px 30px 15px 30px;
 

@@ -5,6 +5,7 @@
   background-position: center; /* Center the background image */
   background-size: 100% 100%; /* Cover the entire container without stretching */
   color: #212529;
+  overflow-y: visible;
 }
 .timeline {
   position: relative;
@@ -127,7 +128,6 @@
 }
 .timeline .timeline-heading h4.subheading,
 .timeline .timeline-heading .subheading.h4 {
-  
   text-transform: none;
   font-size: 2.5rem;
 }

@@ -77,7 +77,7 @@ export default function NavBar({ onLanguageChange }) {
         </Link>
 
         {/*--------------- Popup window html -------------------*/}
-        <button className="button button-dark" onClick={showPopup}>
+        {/* <button className="button button-dark" onClick={showPopup}>
           Choose country
         </button>
         {isPopupVisible && (
@@ -122,7 +122,7 @@ export default function NavBar({ onLanguageChange }) {
             <button onClick={() => handleClick()}>Submit</button>
           </form>
         )}
-        {isPopupVisible && <div className="overlay" onClick={hidePopup}></div>}
+        {isPopupVisible && <div className="overlay" onClick={hidePopup}></div>} */}
         {/*--------------- Popup window html -------------------*/}
 
         <nav>
@@ -137,7 +137,6 @@ export default function NavBar({ onLanguageChange }) {
                   onMouseLeave={() => setActiveNavItem("")}
                 >
                   <div className="nav_about">Login</div>
-                 
                 </Link>
               )}
             </li>
@@ -148,7 +147,6 @@ export default function NavBar({ onLanguageChange }) {
                 onMouseLeave={() => setActiveNavItem("")}
               >
                 <div className="nav_about">Contact</div>
-                
               </Link>
             </li>
             <li>
@@ -158,7 +156,6 @@ export default function NavBar({ onLanguageChange }) {
                 onMouseLeave={() => setActiveNavItem("")}
               >
                 <div className="nav_about">About</div>
-                
               </Link>
             </li>
           </ul>

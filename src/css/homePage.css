@@ -2,10 +2,11 @@
   display: flex;
   flex-direction: row;
   position: absolute;
-  /* top: -5%; */
+  top: 6%;
   /* left: 25%; */
   height: 80vh;
-  margin-left: 40vh;
+  margin: auto;
+  margin-left: 20vh;
 }
 
 .List {
@@ -20,7 +21,7 @@
   scrollbar-width: none;
 
   scroll-snap-type: y mandatory;
-  background: #ffffff;
+  background: #f8f9fa;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -50,7 +51,7 @@
   height: 79.5vh;
   width: 89.5vh;
   z-index: 2;
-  background: #ffffff;
+  background: #f8f9fa;
 }
 
 .Loader {
@@ -130,11 +131,12 @@
 .HomePageContainer {
   display: flex;
   flex-direction: row;
-  position: fixed;
-  width: 100%;
-  height: 100%;
+  position: relative;
+  width: 100vw;
+  height: 93.5vh;
+  background-size: cover;
+  background-position: center;
   left: 0;
-  top: 160px;
 
   /* z-index: 10; */
 }

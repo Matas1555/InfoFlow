@@ -77,7 +77,7 @@ textarea {
   margin: 5px 0;
 }
 
-.usersubmit input {
+/* .usersubmit input {
   background-color: #f25;
   color: white;
   font-weight: bold;
@@ -92,6 +92,29 @@ textarea {
 
 .usersubmit input:hover {
   background-color: #f45;
+} */
+.usersubmit input {
+  --bg-color: #f8f9fa;
+  --main-color: #343a40;
+  width: 15vh;
+  height: 7vh;
+  border-radius: 30%;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.usersubmit input:hover {
+  background-color: #dee2e6;
+}
+.usersubmit input:active {
+  box-shadow: 0px 0px var(--main-color);
+  transform: translate(3px, 3px);
 }
 
 .address {

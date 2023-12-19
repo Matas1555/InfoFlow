@@ -53,53 +53,16 @@ const App = () => {
   const location = useLocation();
   return (
     <div className="background-container">
-      <Routes location={location} key={location.pathname}>
-        <Route
-          path="/"
-          element={
-            <>
-              {/* <NavBar /> */}
-              <HomePage />
-              {/* <Route path="/HomePage" index element={<HomePage />} /> */}
-            </>
-          }
-        />
-        <Route
-          path="/HomePage"
-          element={
-            <>
-              <HomePage />
-            </>
-          }
-        />
-        <Route
-          path="/About"
-          element={
-            <>
-              <NavBar />
-              <About />
-            </>
-          }
-        />
-        <Route
-          path="/Contact"
-          element={
-            <>
-              <NavBar />
-              <Contact />
-            </>
-          }
-        />
-        <Route
-          path="/Login"
-          element={
-            <>
-              <NavBar />
-              <Login />
-            </>
-          }
-        />
-      </Routes>
+      <NavBar />
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/HomePage" element={<HomePage />} />
+          <Route path="/About" element={<About />} />
+          <Route path="/Contact" element={<Contact />} />
+          <Route path="/Login" element={<Login />} />
+        </Routes>
+      </AnimatePresence>
     </div>
   );
 };
