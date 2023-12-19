@@ -9,8 +9,8 @@
 
 /* https://uiverse.io/andrew-demchenk0/itchy-donkey-64 */
 .ReactionButtons {
-  --bg-color: #fff;
-  --main-color: #323232;
+  --bg-color: #F8F9FA;
+  --main-color: #343A40;
   width: 9vh;
   height: 9vh;
   border-radius: 100%;
@@ -24,7 +24,9 @@
   transition: all 0.2s;
   cursor: pointer;
 }
-
+.ReactionButtons:hover{
+ background-color: #DEE2E6;
+}
 .ReactionButtons:active {
   box-shadow: 0px 0px var(--main-color);
   transform: translate(3px, 3px);

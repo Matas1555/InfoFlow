@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../css/navbar.css";
 import InfoFlowIcon from "../assets/LOGO.png";
 import dafaultProfilePhoto from "../assets/default_profile.png";
-
+import MovingLine from "../Navbar_motion";
 import { Link } from "react-router-dom";
 import { auth } from "../App";
 import { database } from "../App";
@@ -12,6 +12,7 @@ import Profile from "./Profile";
 export default function NavBar({ onLanguageChange }) {
   const [isPopupVisible, setPopupVisible] = useState(false);
   const [avatar, setAvatar] = useState("");
+  const [activeNavItem, setActiveNavItem] = useState("");
 
   function showPopup() {
     setPopupVisible(true);
@@ -89,7 +90,7 @@ export default function NavBar({ onLanguageChange }) {
             <label htmlFor="de">Germany 🇩🇪 </label>
             <br />
             <input type="radio" name="lang" id="us" value="us" />
-            <label htmlFor="us">United States </label>
+            <label htmlFor="us">United States 🇺🇸 </label>
             <br />
             <input type="radio" name="lang" id="es" value="es" />
             <label htmlFor="es">Spain 🇪🇸 </label>
@@ -130,19 +131,34 @@ export default function NavBar({ onLanguageChange }) {
               {user ? (
                 <Profile />
               ) : (
-                <Link to="/Login">
+                <Link
+                  to="/Login"
+                  onMouseEnter={() => setActiveNavItem("login")}
+                  onMouseLeave={() => setActiveNavItem("")}
+                >
                   <div className="nav_about">Login</div>
+                  <MovingLine isActive={activeNavItem === "login"} />
                 </Link>
               )}
             </li>
             <li>
-              <Link to="/Contact">
+              <Link
+                to="/Contact"
+                onMouseEnter={() => setActiveNavItem("contact")}
+                onMouseLeave={() => setActiveNavItem("")}
+              >
                 <div className="nav_about">Contact</div>
+                <MovingLine isActive={activeNavItem === "contact"} />
               </Link>
             </li>
             <li>
-              <Link to="/About">
+              <Link
+                to="/About"
+                onMouseEnter={() => setActiveNavItem("about")}
+                onMouseLeave={() => setActiveNavItem("")}
+              >
                 <div className="nav_about">About</div>
+                <MovingLine isActive={activeNavItem === "about"} />
               </Link>
             </li>
           </ul>

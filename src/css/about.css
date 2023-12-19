@@ -127,6 +127,7 @@
 }
 .timeline .timeline-heading h4.subheading,
 .timeline .timeline-heading .subheading.h4 {
+  
   text-transform: none;
   font-size: 2.5rem;
 }
