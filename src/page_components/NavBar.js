@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../css/navbar.css";
 import InfoFlowIcon from "../assets/LOGO.png";
 import dafaultProfilePhoto from "../assets/default_profile.png";
-import MovingLine from "../Navbar_motion";
+
 import { Link } from "react-router-dom";
 import { auth } from "../App";
 import { database } from "../App";
@@ -137,7 +137,7 @@ export default function NavBar({ onLanguageChange }) {
                   onMouseLeave={() => setActiveNavItem("")}
                 >
                   <div className="nav_about">Login</div>
-                  <MovingLine isActive={activeNavItem === "login"} />
+                 
                 </Link>
               )}
             </li>
@@ -148,7 +148,7 @@ export default function NavBar({ onLanguageChange }) {
                 onMouseLeave={() => setActiveNavItem("")}
               >
                 <div className="nav_about">Contact</div>
-                <MovingLine isActive={activeNavItem === "contact"} />
+                
               </Link>
             </li>
             <li>
@@ -158,7 +158,7 @@ export default function NavBar({ onLanguageChange }) {
                 onMouseLeave={() => setActiveNavItem("")}
               >
                 <div className="nav_about">About</div>
-                <MovingLine isActive={activeNavItem === "about"} />
+                
               </Link>
             </li>
           </ul>

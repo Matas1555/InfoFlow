@@ -5,12 +5,19 @@ import { auth } from "../App";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function SideBar({ onCategoryChange }) {
+const SideBar = ({ onCategoryChange }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("Select your country!");
 
-  const selectCategory = (category) => {
-    onCategoryChange(category);
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+    setIsDropdownOpen(false);
   };
 
   useEffect(() => {
@@ -43,46 +50,117 @@ export default function SideBar({ onCategoryChange }) {
             </h1>
           </li>
           <li>
-            <button onClick={() => selectCategory("general")}>
+            <button onClick={() => onCategoryChange("general")}>
               <i className="fa fa-users fa-lg" aria-hidden="true"></i>{" "}
               <span></span> General
             </button>
           </li>
           <li>
-            <button onClick={() => selectCategory("entertainment")}>
+            <button onClick={() => onCategoryChange("entertainment")}>
               <i className="fa fa-television fa-lg" aria-hidden="true"></i>{" "}
               <span></span> Entertainment
             </button>
           </li>
           <li>
-            <button onClick={() => selectCategory("business")}>
+            <button onClick={() => onCategoryChange("business")}>
               <i className="fa fa-briefcase fa-lg" aria-hidden="true"></i>{" "}
               <span></span> Business
             </button>
           </li>
           <li>
-            <button onClick={() => selectCategory("health")}>
+            <button onClick={() => onCategoryChange("health")}>
               <i className="fa fa-medkit fa-lg" aria-hidden="true"></i>{" "}
               <span></span> Health
             </button>
           </li>
           <li>
-            <button onClick={() => selectCategory("science")}>
+            <button onClick={() => onCategoryChange("science")}>
               <i className="fa fa-flask fa-lg" aria-hidden="true"></i>{" "}
               <span></span> Science
             </button>
           </li>
           <li>
-            <button onClick={() => selectCategory("sports")}>
+            <button onClick={() => onCategoryChange("sports")}>
               <i className="fa fa-trophy fa-lg" aria-hidden="true"></i>{" "}
               <span></span> Sports
             </button>
           </li>
           <li>
-            <button onClick={() => selectCategory("technology")}>
+            <button onClick={() => onCategoryChange("technology")}>
               <i className="fa fa-cog fa-lg" aria-hidden="true"></i>{" "}
               <span></span> Technology
             </button>
+          </li>
+          <li>
+            <div className="center">
+              <div className="container">
+                <div className="setting-description">
+                  <div className="setting-description-text" style={{ marginLeft: 15 }}>
+                    <h10>Choose country</h10>
+                  </div>
+                </div>
+                <div className={`wrapper-dropdown ${isDropdownOpen ? "active" : ""}`} id="dropdown">
+                  <span className="selected-display" onClick={handleDropdownToggle} id="destination">
+                    {selectedOption}
+                  </span>
+                  <svg onClick={handleDropdownToggle}
+                    className={`arrow ${isDropdownOpen ? "rotated" : ""}`}
+                    id="drp-arrow"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7 14.5l5-5 5 5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></path>
+                  </svg>
+                  <ul className="dropdown">
+                    <li className="item" onClick={() => handleOptionSelect("Saudi arabia")}>
+                    <label htmlFor="ar">Saudi arabia &#128514; </label>
+                    </li>
+                    <li className="item" onClick={() => handleOptionSelect("Germany")}>
+                    <label htmlFor="de">Germany 🇩🇪 </label>
+                    </li>
+                    <li className="item" onClick={() => handleOptionSelect("United States")}>
+                    <label htmlFor="us">United States 🇺🇸 </label>
+                    </li>
+                    <li className="item" onClick={() => handleOptionSelect("Spain")}>
+                    <label htmlFor="es">Spain 🇪🇸 </label>
+                    </li>
+                    <li className="item" onClick={() => handleOptionSelect("France")}>
+                    <label htmlFor="fr">France 🇫🇷 </label>
+                    </li>
+                    <li className="item" onClick={() => handleOptionSelect("Isreal")}>
+                    <label htmlFor="he">Isreal 🇮🇱 </label>
+                    </li>
+                    <li className="item" onClick={() => handleOptionSelect("Italy")}>
+                    <label htmlFor="it">Italy 🇮🇹 </label>
+                    </li>
+                    <li className="item" onClick={() => handleOptionSelect("Netherlands")}>
+                    <label htmlFor="nl">Netherlands 🇳🇱 </label>
+                    </li>
+                    <li className="item" onClick={() => handleOptionSelect("Norway")}>
+                    <label htmlFor="no">Norway 🇳🇴 </label>
+                    </li>
+                    <li className="item" onClick={() => handleOptionSelect("Portugal")}>
+                    <label htmlFor="pt">Portugal 🇵🇹 </label>
+                    </li>
+                    <li className="item" onClick={() => handleOptionSelect("Russia")}>
+                    <label htmlFor="ru">Russia 🇷🇺 </label>
+                    </li>
+                    <li className="item" onClick={() => handleOptionSelect("Sweden")}>
+                    <label htmlFor="sv">Sweden 🇸🇪 </label>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </li>
         </ul>
         <ul className="nav_sidebar_logout">
@@ -99,4 +177,6 @@ export default function SideBar({ onCategoryChange }) {
       </nav>
     </div>
   );
-}
+};
+
+export default SideBar;
