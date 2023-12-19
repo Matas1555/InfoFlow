@@ -7,11 +7,37 @@ import "../css/homePage.css";
 import { database } from "../App";
 import { db } from "../App";
 import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+import transition from "../transition";
+import { motion } from "framer-motion";
 
 const { v4: uuidv4 } = require("uuid");
 // import ScrollContainer from "./ScrollContainer";
 
-export default function HomePage() {
+const pageVariants = {
+  initial: {
+    opacity: 0,
+    x: "100vh",
+    scale: 0.8,
+  },
+  in: {
+    opacity: 1,
+    x: 0,
+    scale: 1,
+  },
+  out: {
+    opacity: 0,
+    x: "-100vh",
+    scale: 1.2,
+  },
+};
+
+const pageTransition = {
+  duration: 0.8,
+  type: "linear",
+  ease: "anticipate",
+};
+
+const HomePage = () => {
   const [articles, setArticles] = useState([]);
   const [page, setPage] = useState(1);
   const [articleCategory, setArticleCategory] = useState("general");
@@ -63,9 +89,9 @@ export default function HomePage() {
     //   // articleRef.set(article);
     // }
 
-    response.articles.forEach(async (article, index) => {
-      await setDoc(doc(db, "articleExample", `article${index}`), article);
-    });
+    // response.articles.forEach(async (article, index) => {
+    //   await setDoc(doc(db, "articleExample", `article${index}`), article);
+    // });
 
     //Remove all articles that are empty
     let filteredArticles = response.articles.filter(
@@ -170,57 +196,58 @@ export default function HomePage() {
 
     return (
       <>
-      <div className="background-container">
-        <div className="whole-container">
-          <div className="List">
-            {articles.map((article, index) => (
-              <a
-                href={article.url} // Set the URL from the article data
-                target="_blank" // Opens the link in a new tab
-                key={index}
-                className="ClickableContainer"
-              >
-                {/* <div
+        <div className="background-container">
+          <div className="whole-container">
+            <div className="List">
+              {articles.map((article, index) => (
+                <a
+                  href={article.url} // Set the URL from the article data
+                  target="_blank" // Opens the link in a new tab
+                  key={index}
+                  className="ClickableContainer"
+                >
+                  {/* <div
                 className={`${
                   article.urlToImage ? "WithImage" : "WithoutImage"
                 }`}
                 key={index}
               > */}
-                <div className="Item" key={index}>
-                  <div className="ImageContainer">
-                    <img
-                      src={article.urlToImage}
-                      alt={article.description}
-                      className="ResponsiveImage"
-                    />
-                  </div>
-                  <div className="articleInfo">
-                    <h1 className="article-author">{article.author}</h1>
-                    <h2 className="article-title">{article.title}</h2>
-                    <div className="article-bottom">
-                      <h1 className="article-source">{article.source.name}</h1>
-                      <h1 className="article-publishedAt">
-                        {
-                          new Date(article.publishedAt)
-                            .toISOString()
-                            .split("T")[0]
-                        }
-                      </h1>
+                  <div className="Item" key={index}>
+                    <div className="ImageContainer">
+                      <img
+                        src={article.urlToImage}
+                        alt={article.description}
+                        className="ResponsiveImage"
+                      />
+                    </div>
+                    <div className="articleInfo">
+                      <h1 className="article-author">{article.author}</h1>
+                      <h2 className="article-title">{article.title}</h2>
+                      <div className="article-bottom">
+                        <h1 className="article-source">
+                          {article.source.name}
+                        </h1>
+                        <h1 className="article-publishedAt">
+                          {
+                            new Date(article.publishedAt)
+                              .toISOString()
+                              .split("T")[0]
+                          }
+                        </h1>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                {/* </div> */}
-              </a>
-              
-            ))}
 
-            <div className="Loader" ref={ref}>
-              <i className="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+                  {/* </div> */}
+                </a>
+              ))}
+
+              <div className="Loader" ref={ref}>
+                <i className="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+              </div>
             </div>
+            <ReactionButtons />
           </div>
-          <ReactionButtons />
-        </div>
         </div>
       </>
     );
@@ -230,9 +257,31 @@ export default function HomePage() {
     <>
       <NavBar onLanguageChange={handleLanguageChange} />
       <div className="HomePageContainer">
-        <SideBar onCategoryChange={handleCategoryChange} />
-        {ScrollContainer()}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          exit={{ scaleX: 1 }}
+          transition={{
+            duration: 0.8,
+            type: "linear",
+            ease: "anticipate",
+          }}
+        >
+          <SideBar onCategoryChange={handleCategoryChange} />
+        </motion.div>
+
+        <motion.div
+          initial="initial"
+          animate="in"
+          exit="out"
+          variants={pageVariants}
+          transition={pageTransition}
+        >
+          {ScrollContainer()}
+        </motion.div>
       </div>
     </>
   );
-}
+};
+
+export default HomePage;

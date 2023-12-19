@@ -9,8 +9,9 @@ import {
 import { ref, set, update } from "firebase/database";
 
 import React, { useRef } from "react";
+import transition from "../transition";
 
-export default function Login() {
+const Login = () => {
   const navigate = useNavigate();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -230,4 +231,6 @@ export default function Login() {
       </div>
     </div>
   );
-}
+};
+
+export default transition(Login);

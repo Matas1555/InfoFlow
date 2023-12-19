@@ -127,16 +127,6 @@ export default function NavBar({ onLanguageChange }) {
         <nav>
           <ul className="nav_bar">
             <li>
-              <Link to="/About">
-                <div className="nav_about">About</div>
-              </Link>
-            </li>
-            <li>
-              <Link to="/Contact">
-                <div className="nav_about">Contact</div>
-              </Link>
-            </li>
-            <li>
               {user ? (
                 <Profile />
               ) : (
@@ -144,6 +134,16 @@ export default function NavBar({ onLanguageChange }) {
                   <div className="nav_about">Login</div>
                 </Link>
               )}
+            </li>
+            <li>
+              <Link to="/Contact">
+                <div className="nav_about">Contact</div>
+              </Link>
+            </li>
+            <li>
+              <Link to="/About">
+                <div className="nav_about">About</div>
+              </Link>
             </li>
           </ul>
         </nav>

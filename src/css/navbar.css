@@ -8,7 +8,7 @@ header {
   width: 100%;
   height: 70px;
   align-items: center;
-  background-color: #232323;
+  background-color: #343a40;
   box-shadow: 0px 10px 20px #4b4b4b;
 }
 
@@ -52,7 +52,7 @@ a {
   text-decoration: none;
   color: white;
   font-size: 25px;
-  background-color: #232323;
+  background-color: #343a40;
   padding: 20px 30px 20px 30px;
   margin-left: 5px;
 }
@@ -74,7 +74,7 @@ a {
   text-decoration: none;
   color: white;
   font-size: 20px;
-  background-color: #232323;
+  background-color: #343a40;
   border-radius: 15px 50px;
   padding: 15px 30px 15px 30px;
 
@@ -119,7 +119,7 @@ button.button.button-dark {
   text-decoration: none;
   color: white;
   font-size: 25px;
-  background-color: #232323;
+  background-color: #343a40;
   padding: 20px 30px 20px 30px;
   border: none;
   border-radius: 30px 30px 0px 0px;

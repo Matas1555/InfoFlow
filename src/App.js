@@ -8,7 +8,14 @@ import NavBar from "./page_components/NavBar";
 import Register from "./page_components/Register";
 import background from "../src/assets/newspaper.jpg";
 import "./css/main.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Router,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -43,62 +50,58 @@ export const db = getFirestore(app);
 
 // Higher-order component to include NavBar for all routes except HomePage
 const App = () => {
+  const location = useLocation();
   return (
-    <div  className="background-container">
-      
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                {/* <NavBar /> */}
-                <HomePage />
-                {/* <Route path="/HomePage" index element={<HomePage />} /> */}
-              </>
-            }
-          />
-          <Route
-            path="/HomePage"
-            element={
-              <>
-                <HomePage />
-              </>
-            }
-          />
-          <Route
-            path="/About"
-            element={
-              <>
-                <NavBar />
-                <About />
-              </>
-            }
-          />
-          <Route
-            path="/Contact"
-            element={
-              <>
-                <NavBar />
-                <Contact />
-              </>
-            }
-          />
-          <Route
-            path="/Login"
-            element={
-              <>
-                <NavBar />
-                <Login />
-              </>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
+    <div className="background-container">
+      <Routes location={location} key={location.pathname}>
+        <Route
+          path="/"
+          element={
+            <>
+              {/* <NavBar /> */}
+              <HomePage />
+              {/* <Route path="/HomePage" index element={<HomePage />} /> */}
+            </>
+          }
+        />
+        <Route
+          path="/HomePage"
+          element={
+            <>
+              <HomePage />
+            </>
+          }
+        />
+        <Route
+          path="/About"
+          element={
+            <>
+              <NavBar />
+              <About />
+            </>
+          }
+        />
+        <Route
+          path="/Contact"
+          element={
+            <>
+              <NavBar />
+              <Contact />
+            </>
+          }
+        />
+        <Route
+          path="/Login"
+          element={
+            <>
+              <NavBar />
+              <Login />
+            </>
+          }
+        />
+      </Routes>
     </div>
   );
 };
-
-
 
 export default App;
