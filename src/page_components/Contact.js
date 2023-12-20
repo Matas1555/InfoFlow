@@ -33,21 +33,21 @@ const Contact = () => {
                     ></textarea>
                   </div>
                   <div class="usersubmit">
-                    <input type="submit" value="Contact Us" />
+                    <input type="submit" value="Submit" />
                   </div>
                 </form>
               </div>
               <div class="address">
                 <div class="email">
                   <h4>Reach us through here!</h4>
-                  <p>infoflow@support.com</p>
+                  <p>infoflow@gmail.com</p>
                 </div>
                 <div class="location">
                   <h4>Based in</h4>
                   <p>
-                    Los Angeles,
+                    Kaunas,
                     <br />
-                    California
+                    Lithuania
                   </p>
                 </div>
               </div>

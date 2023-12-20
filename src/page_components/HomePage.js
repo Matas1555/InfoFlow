@@ -7,6 +7,9 @@ import { useInView } from "react-hook-inview";
 import "../css/homePage.css";
 import "../css/comments.css";
 import defaultProfileFT from "../assets/default_profile.png";
+import profile1 from "../assets/profileft/images.jpg";
+import profile2 from "../assets/profileft/images (1).jpg";
+import profile3 from "../assets/profileft/images (2).jpg";
 
 import { database } from "../App";
 import { db } from "../App";
@@ -85,13 +88,13 @@ const HomePage = () => {
       apiKey;
 
     // Fetch the data from the API
-    // var req = new Request(url);
-    // let a = await fetch(req);
-    // let response = await a.json();
+    var req = new Request(url);
+    let a = await fetch(req);
+    let response = await a.json();
 
     //Uncomment if you get response.articles is undifined error
-    let response = [];
-    response.articles = [];
+    // let response = [];
+    // response.articles = [];
 
     // for (let article of response.articles) {
     //   const date = article.datePublished; // get the date
@@ -282,15 +285,34 @@ const HomePage = () => {
             <div className="comment-content">
               <div className="scrolling-comments">
                 <div className="show-comments">
-                  <img
-                    className="other-user-profileft"
-                    src={defaultProfileFT}
-                  ></img>
+                  <img className="other-user-profileft" src={profile1}></img>
                   <div className="other-user-comments">
-                    <p className="comment-username">Username</p>
+                    <p className="comment-username">hawkvirtue</p>
                     <p className="users-comment">
-                      This is a commentThis is a comment This is a comment This
-                      is a comment
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Phasellus interdum scelerisque nulla eu blandit. Aliquam
+                      quis magna scelerisque, eleifend nunc nec, rutrum nisi.
+                    </p>
+                  </div>
+                </div>
+                <div className="show-comments">
+                  <img className="other-user-profileft" src={profile2}></img>
+                  <div className="other-user-comments">
+                    <p className="comment-username">leftrostrum</p>
+                    <p className="users-comment">
+                      Morbi vitae condimentum libero, facilisis luctus elit.
+                      Suspendisse viverra dui at rhoncus posuere.
+                    </p>
+                  </div>
+                </div>
+                <div className="show-comments">
+                  <img className="other-user-profileft" src={profile3}></img>
+                  <div className="other-user-comments">
+                    <p className="comment-username">angeranalyst</p>
+                    <p className="users-comment">
+                      Aliquam erat volutpat. Curabitur dapibus ligula pretium
+                      maximus auctor. Donec dictum tincidunt orci eu
+                      ullamcorper.
                     </p>
                   </div>
                 </div>
@@ -300,36 +322,10 @@ const HomePage = () => {
                     src={defaultProfileFT}
                   ></img>
                   <div className="other-user-comments">
-                    <p className="comment-username">Username</p>
+                    <p className="comment-username">biddywrestling</p>
                     <p className="users-comment">
-                      This is a commentThis is a comment This is a comment This
-                      is a comment
-                    </p>
-                  </div>
-                </div>
-                <div className="show-comments">
-                  <img
-                    className="other-user-profileft"
-                    src={defaultProfileFT}
-                  ></img>
-                  <div className="other-user-comments">
-                    <p className="comment-username">Username</p>
-                    <p className="users-comment">
-                      This is a commentThis is a comment This is a comment This
-                      is a comment
-                    </p>
-                  </div>
-                </div>
-                <div className="show-comments">
-                  <img
-                    className="other-user-profileft"
-                    src={defaultProfileFT}
-                  ></img>
-                  <div className="other-user-comments">
-                    <p className="comment-username">Username</p>
-                    <p className="users-comment">
-                      This is a commentThis is a comment This is a comment This
-                      is a comment
+                      Morbi vitae condimentum libero, facilisis luctus elit.
+                      Suspendisse viverra dui at rhoncus posuere.
                     </p>
                   </div>
                 </div>

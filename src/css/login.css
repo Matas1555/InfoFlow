@@ -44,7 +44,7 @@ a {
   right: 0;
   bottom: 0;
   position: absolute;
-  transform: rotateY(90deg);
+  transform: rotateY(180deg);
   backface-visibility: hidden;
   transition: transform 0.4s ease;
 }

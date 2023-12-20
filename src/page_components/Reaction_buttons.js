@@ -22,18 +22,29 @@ const ReactionButtons = ({ setCommentWindowVisible }) => {
 
   return (
     <div className="ReactionButtons-container">
-      <button className="ReactionButtons" onClick={handleLike}>
-        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-      </button>
-      <button className="ReactionButtons" onClick={handleDislike}>
-        <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-      </button>
-      <button className="ReactionButtons" onClick={handleComment}>
-        <i class="fa fa-comment" aria-hidden="true"></i>
-      </button>
-      <button className="ReactionButtons" onClick={handleShare}>
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-      </button>
+      <div className="reaction-button-text">
+        <button className="ReactionButtons" onClick={handleLike}>
+          <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+        </button>
+        <p className="likes-text">102</p>
+      </div>
+      <div className="reaction-button-text">
+        <button className="ReactionButtons" onClick={handleDislike}>
+          <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+        </button>
+        <p className="likes-text">15</p>
+      </div>
+      <div className="reaction-button-text">
+        <button className="ReactionButtons" onClick={handleComment}>
+          <i class="fa fa-comment" aria-hidden="true"></i>
+        </button>
+        <p className="likes-text">4</p>
+      </div>
+      <div>
+        <button className="ReactionButtons" onClick={handleShare}>
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </button>
+      </div>
     </div>
   );
 };

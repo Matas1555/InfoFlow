@@ -2,6 +2,8 @@ import "../css/login.css";
 import { auth } from "../App";
 import { database } from "../App";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import ForgotPass from "./ForgotPass";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -169,7 +171,9 @@ const Login = () => {
             </div>
             <div className="hr"></div>
             <div className="foot-lnk">
-              <a href="#forgot">Forgot Password?</a>
+              <Link to="/ForgotPass">
+                <a href="#forgot">Forgot Password?</a>
+              </Link>
             </div>
           </div>
           <div className="sign-up-htm">
@@ -224,7 +228,7 @@ const Login = () => {
             </div>
             <div className="hr"></div>
             <div className="foot-lnk">
-              <label htmlFor="tab-1">Already Member?</label>
+              <label htmlFor="tab-1">Already a Member?</label>
             </div>
           </div>
         </div>

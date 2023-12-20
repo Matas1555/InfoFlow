@@ -5,7 +5,7 @@ import Contact from "./page_components/Contact";
 import Login from "./page_components/Login";
 import SideBar from "./page_components/SideBar";
 import NavBar from "./page_components/NavBar";
-import Register from "./page_components/Register";
+import Register from "./page_components/ForgotPass";
 import background from "../src/assets/newspaper.jpg";
 import "./css/main.css";
 import {
@@ -23,6 +23,7 @@ import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 import { getFirestore } from "firebase/firestore";
+import ForgotPass from "./page_components/ForgotPass";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -61,6 +62,7 @@ const App = () => {
           <Route path="/About" element={<About />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/Login" element={<Login />} />
+          <Route path="/ForgotPass" element={<ForgotPass />} />
         </Routes>
       </AnimatePresence>
     </div>

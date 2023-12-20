@@ -98,7 +98,6 @@ textarea {
   --main-color: #343a40;
   width: 15vh;
   height: 7vh;
-  border-radius: 30%;
   border: 2px solid var(--main-color);
   background-color: var(--bg-color);
   box-shadow: 4px 4px var(--main-color);
