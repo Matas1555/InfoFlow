@@ -1,4 +1,5 @@
-.container {
+
+.container_lang {
   position: relative;
 
   width: 0px;
@@ -120,6 +121,7 @@
   display: block;
   min-width: 231.5px;
   width: 80%;
+  height: 200%;
   max-width: 300px;
   transform: none !important;
   padding-bottom: 50px;
@@ -263,7 +265,8 @@ svg {
   border-radius: 15px;
 }
 .dropdown {
-  max-height: 150px;
+  
+  max-height: 138px;
   overflow-y: auto;
   scrollbar-width: thin;
 }
