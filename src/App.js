@@ -5,7 +5,7 @@ import Contact from "./page_components/Contact";
 import Login from "./page_components/Login";
 import SideBar from "./page_components/SideBar";
 import NavBar from "./page_components/NavBar";
-import Register from "./page_components/ForgotPass";
+import ForgotPass from "./page_components/ForgotPass";
 import background from "../src/assets/newspaper.jpg";
 import "./css/main.css";
 import {
@@ -16,42 +16,45 @@ import {
   useLocation,
 } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import { app, db } from "./firebaseConfig";
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
-import { getDatabase } from "firebase/database";
-import { getFirestore } from "firebase/firestore";
-import ForgotPass from "./page_components/ForgotPass";
+import {
+  uploadArticles,
+  fetchTopArticles,
+} from "./page_components/fetchArticles";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBsPD3jp5S8NZQdQvedxC7PdvBvwUIRu3I",
-  authDomain: "infoflow-3161d.firebaseapp.com",
-  databaseURL:
-    "https://infoflow-3161d-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "infoflow-3161d",
-  storageBucket: "infoflow-3161d.appspot.com",
-  messagingSenderId: "502249630136",
-  appId: "1:502249630136:web:6632f661ae525a3e11c74d",
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const database = getDatabase(app);
-export const analytics = getAnalytics(app);
-export const db = getFirestore(app);
-//Initialize Firebase auth
-
-// Higher-order component to include NavBar for all routes except HomePage
 const App = () => {
   const location = useLocation();
+  const [articles, setArticles] = useState([]);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+  const yesterdayDateString = yesterday.toISOString().split("T")[0];
+
+  const category = "General";
+  const country = "us";
+
+  //Upon loading the website an API call is made
+  useEffect(() => {
+    // const executeArticleFetching = async (country, category, date) => {
+    //   fetchTopArticles(country, category, date)
+    //     .then((articles) => {
+    //       setArticles(articles);
+    //       uploadArticles(articles, date, category);
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error fetching top articles: ", error);
+    //     });
+    // };
+    // executeArticleFetching(country, "general", yesterdayDateString);
+    // executeArticleFetching(country, "business", yesterdayDateString);
+    // executeArticleFetching(country, "entertainment", yesterdayDateString);
+    // executeArticleFetching(country, "health", yesterdayDateString);
+    // executeArticleFetching(country, "science", yesterdayDateString);
+    // executeArticleFetching(country, "sports", yesterdayDateString);
+    // executeArticleFetching(country, "technology", yesterdayDateString);
+  }, []);
+
   return (
     <div className="background-container">
       <NavBar />

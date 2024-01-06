@@ -1,16 +1,18 @@
 import "../css/login.css";
-import { auth } from "../App";
-import { database } from "../App";
+import { auth } from "../firebaseConfig";
+import { realtimeDatabase } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ForgotPass from "./ForgotPass";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
 } from "firebase/auth";
 import { ref, set, update } from "firebase/database";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import transition from "../transition";
 
 const Login = () => {
@@ -19,6 +21,11 @@ const Login = () => {
   const passwordRef = useRef(null);
   const usernameRef = useRef(null);
   const repeatPasswordRef = useRef(null);
+  const allowScrolling = false;
+
+  useEffect(() => {
+    document.body.style.overflowY = allowScrolling ? "scroll" : "hidden";
+  }, []);
 
   const emailRefLogIn = useRef(null);
   const passwordRefLogIn = useRef(null);
@@ -31,14 +38,19 @@ const Login = () => {
       .then((userCredential) => {
         var userID = auth.currentUser;
 
-        // A post entry.
-        const postData = {
-          lastLogin: Date.now(),
-        };
+        if (userCredential.user.emailVerified) {
+          // A post entry.
+          const postData = {
+            lastLogin: Date.now(),
+          };
 
-        console.log("logged in!");
-        navigate("/");
-        return update(ref(database, "users/" + userID.uid), postData);
+          console.log("logged in!");
+          navigate("/");
+          return update(ref(realtimeDatabase, "users/" + userID.uid), postData);
+        } else {
+          auth.signOut();
+          alert("Email has not been verified!");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -52,23 +64,22 @@ const Login = () => {
     const userName = usernameRef.current.value;
     const repeatPassword = repeatPasswordRef.current.value;
 
-    console.log(userName);
-    console.log(email);
-    console.log(password);
-
     //TODO make a pop up to say what is wrong so the user can see it
     if (!isEmailValid(email)) {
       console.log("Email is bad!");
+      alert("Email is bad!");
       return;
     }
 
     if (!isPasswordValid(password)) {
       console.log("Password is bad!");
+      alert("Password is bad!");
       return;
     }
 
     if (repeatPassword !== password) {
       console.log("Passwords do not match!");
+      alert("Passwords do not match!");
       return;
     }
 
@@ -87,18 +98,38 @@ const Login = () => {
 
         var userID = auth.currentUser;
 
-        set(ref(database, "users/" + userID.uid), {
+        updateProfile(auth.currentUser, {
+          displayName: userName,
+          photoURL: "",
+        })
+          .then(() => {
+            // Profile updated!
+            // ...
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
+
+        set(ref(realtimeDatabase, "users/" + userID.uid), {
           email: email,
           username: userName,
           avatar: "",
           lastLogin: Date.now(),
         });
 
-        alert("User created!");
+        sendEmailVerification(auth.currentUser).then(() => {
+          console.log("Email verification sent!");
+        });
+
+        auth.signOut();
+
+        alert(
+          "An email has been sent to your email account, please click the link to verify it."
+        );
       })
       .catch((err) => {
         console.log(err);
-        alert(err);
+        alert(err.message);
       });
   };
 
@@ -127,11 +158,24 @@ const Login = () => {
   return (
     <div className="login-wrap">
       <div className="login-html">
-        <input id="tab-1" type="radio" name="tab" className="sign-in" checked />
+        <input
+          id="tab-1"
+          type="radio"
+          name="tab"
+          className="sign-in"
+          checked
+          readOnly
+        />
         <label htmlFor="tab-1" className="tab">
           Sign In
         </label>
-        <input id="tab-2" type="radio" name="tab" className="sign-up" />
+        <input
+          id="tab-2"
+          type="radio"
+          name="tab"
+          className="sign-up"
+          readOnly
+        />
         <label htmlFor="tab-2" className="tab">
           Sign Up
         </label>
@@ -172,7 +216,7 @@ const Login = () => {
             <div className="hr"></div>
             <div className="foot-lnk">
               <Link to="/ForgotPass">
-                <a href="#forgot">Forgot Password?</a>
+                <p>Forgot Password?</p>
               </Link>
             </div>
           </div>

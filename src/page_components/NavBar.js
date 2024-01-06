@@ -4,8 +4,8 @@ import InfoFlowIcon from "../assets/LOGO.png";
 import dafaultProfilePhoto from "../assets/default_profile.png";
 
 import { Link } from "react-router-dom";
-import { auth } from "../App";
-import { database } from "../App";
+import { auth } from "../firebaseConfig";
+import { realtimeDatabase } from "../firebaseConfig";
 import { ref, set, update, onValue } from "firebase/database";
 import Profile from "./Profile";
 
@@ -48,7 +48,7 @@ export default function NavBar({ onLanguageChange }) {
 
     //Getting data from realtime database
     if (user !== null) {
-      const avatarRef = ref(database, "/users/" + user.uid);
+      const avatarRef = ref(realtimeDatabase, "/users/" + user.uid);
 
       onValue(
         avatarRef,

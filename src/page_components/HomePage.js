@@ -3,6 +3,7 @@ import NavBar from "./NavBar";
 import ReactionButtons from "../page_components/Reaction_buttons";
 import { useEffect, useState } from "react";
 import { useInView } from "react-hook-inview";
+import "../css/reaction_buttons.css";
 
 import "../css/homePage.css";
 import "../css/comments.css";
@@ -11,11 +12,27 @@ import profile1 from "../assets/profileft/images.jpg";
 import profile2 from "../assets/profileft/images (1).jpg";
 import profile3 from "../assets/profileft/images (2).jpg";
 
-import { database } from "../App";
-import { db } from "../App";
-import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+import { realtimeDatabase, db, auth } from "../firebaseConfig";
+import { getDoc, doc, updateDoc } from "firebase/firestore";
+import { getDatabase, ref, get } from "firebase/database";
+import {
+  where,
+  deleteDoc,
+  setDoc,
+  collection,
+  getDocs,
+  query,
+  increment,
+} from "firebase/firestore";
+
 import transition from "../transition";
 import { motion } from "framer-motion";
+
+import {
+  fetchArticlesFromDatabase,
+  fetchTopArticles,
+  fetchUserInteraction,
+} from "./fetchArticles";
 
 const { v4: uuidv4 } = require("uuid");
 // import ScrollContainer from "./ScrollContainer";
@@ -66,135 +83,43 @@ const HomePage = () => {
   const [articleCategory, setArticleCategory] = useState("general");
   const [articleLanguage, setArticleCLanguage] = useState("us");
   const [isCommentWindowVisible, setCommentWindowVisible] = useState(false);
+  const [commentUsers, setCommentUsers] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [date, setArticleDate] = useState(new Date());
+  const allowScrolling = false;
 
-  //Code has two fetch article functions, one fetches articles from the "top-headlines" endpoint, the other one fetches from "everything" endpoint.
-  //Top headlines function is more usable, contains better articles
-  const fetchTopArticles = async (country, category, withHistory) => {
-    const apiKey = "2a797461e90448799c9c602abb432b4f";
-    console.log("Fetching news...");
-    // Define query parameters for "top-headlines" endpoint
-    var url =
-      "https://newsapi.org/v2/top-headlines?" +
-      "category=" +
-      category +
-      "&country=" +
-      country +
-      "&pageSize=100" +
-      "from=" +
-      Date.now() +
-      "to=" +
-      Date.now() +
-      "&apiKey=" +
-      apiKey;
-
-    // Fetch the data from the API
-    var req = new Request(url);
-    let a = await fetch(req);
-    let response = await a.json();
-
-    //Uncomment if you get response.articles is undifined error
-    // let response = [];
-    // response.articles = [];
-
-    // for (let article of response.articles) {
-    //   const date = article.datePublished; // get the date
-
-    //   const id = uuidv4();
-
-    //   // // Create a new document for the date in the articles collection
-    //   // const dateRef = doc(collection(db, "articles"));
-    //   // console.log(dateRef);
-
-    //   // // Check if the document already exists
-    //   // const doc = await dateRef.get();
-
-    //   // // Create a new subcollection for the articles and add the article to it
-    //   // const articleRef = dateRef.collection("articles").doc(id);
-    //   // articleRef.set(article);
-    // }
-
-    // response.articles.forEach(async (article, index) => {
-    //   await setDoc(doc(db, "articleExample", `article${index}`), article);
-    // });
-
-    //Remove all articles that are empty
-    let filteredArticles = response.articles.filter(
-      (article) => article.title !== "[Removed]"
-    );
-
-    // Remove duplicate articles based on URL
-    filteredArticles = filteredArticles.filter(
-      (article, index, self) =>
-        index === self.findIndex((t) => t.url === article.url)
-    );
-
-    //Depending on the situation, we can choose if the user can view articles that they scrolled by before
-    if (withHistory) {
-      setArticles((prevArticles) => [...prevArticles, ...filteredArticles]);
-    } else {
-      setArticles(filteredArticles);
-    }
-    console.log(response);
-  };
-
-  // const fetchArticles = async (keywords, language) => {
-  //   const apiKey = "2a797461e90448799c9c602abb432b4f";
-  //   const today = new Date();
-  //   const twoDaysAgo = new Date();
-  //   twoDaysAgo.setDate(today.getDate() - 2);
-
-  //   // Converts the dates to 'YYYY-MM-DD' format
-  //   //This is used for the API call so it recognizes from what date to search for articles
-  //   const formatDate = (date) => {
-  //     const year = date.getFullYear();
-  //     const month = String(date.getMonth() + 1).padStart(2, "0");
-  //     const day = String(date.getDate()).padStart(2, "0");
-  //     return `${year}-${month}-${day}`;
-  //   };
-
-  //   const todayISO = formatDate(today);
-  //   const twoDaysAgoISO = formatDate(twoDaysAgo);
-
-  //   console.log("Fetching news...");
-  //   // Define query parameters for "everything" endpoint
-  //   var url =
-  //     "https://newsapi.org/v2/everything?" +
-  //     "q=" +
-  //     keywords +
-  //     "&from=" +
-  //     twoDaysAgoISO +
-  //     "&language=" +
-  //     language +
-  //     "&sortBy=popularity&" +
-  //     "pageSize=100&" +
-  //     "apiKey=" +
-  //     apiKey +
-  //     `&timestamp=${Date.now()}`; // Add a timestamp to the query
-
-  //   var req = new Request(url);
-
-  //   // Fetch the data from the API
-  //   let a = await fetch(req);
-  //   let response = await a.json();
-  //   setArticles((prevArticles) => [...prevArticles, ...response.articles]);
-  //   console.log(response);
-
-  //   //Example how to acquire information from the fetches array of articles
-  //   //response.articles[0].title;
-  //   //response.articles[0].image;
-  // };
+  //Create a date variable
+  // const today = new Date();
+  // const yesterday = new Date(today);
+  // yesterday.setDate(today.getDate() - 1);
+  // setArticleDate(yesterday.toISOString().split("T")[0]);
 
   //handles the string that was passed from sidebar.js
   //uses the category in article fetching
   const handleCategoryChange = async (category) => {
+    const today = new Date();
+    const dayBefore = new Date(today);
+    dayBefore.setDate(today.getDate() - 2);
+    setArticleDate(dayBefore);
+    const yesterday = dayBefore.toISOString().split("T")[0];
     setArticleCategory(category);
-    fetchTopArticles("us", category, false); // Fetch new articles with the updated category
+    fetchArticlesFromDatabase(yesterday, category).then((articles) => {
+      setArticles(articles);
+    });
     console.log(category);
   };
 
   const handleLanguageChange = async (language) => {
+    const today = new Date();
+    const dayBefore = new Date(today);
+    dayBefore.setDate(today.getDate() - 2);
+    setArticleDate(dayBefore);
+    const yesterday = dayBefore.toISOString().split("T")[0];
     setArticleCLanguage(language);
-    fetchTopArticles(language, articleCategory, false);
+    fetchTopArticles(language, articleCategory, yesterday).then((articles) => {
+      console.log(articles);
+      setArticles(articles);
+    });
     console.log(language);
   };
 
@@ -202,18 +127,286 @@ const HomePage = () => {
     setCommentWindowVisible(false);
   };
 
+  const handleCommentWindowOpen = () => {
+    setCommentWindowVisible(true);
+  };
+
+  const fetchUserData = async (userID) => {
+    const userRef = ref(realtimeDatabase, `users/${userID}`);
+    const snapshot = await get(userRef);
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      throw new Error(`No user found with ID ${userID}`);
+    }
+  };
+
   useEffect(() => {
-    fetchTopArticles("us", articleCategory, false);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 2);
+    setArticleDate(yesterday);
+    setCurrentIndex(0);
+
+    document.body.style.overflowY = allowScrolling ? "scroll" : "hidden";
   }, []);
+
+  useEffect(() => {
+    if (articles[currentIndex]?.comments) {
+      const fetchCommentsData = async () => {
+        const users = await Promise.all(
+          Object.entries(articles[currentIndex]?.comments).map(([userID]) =>
+            fetchUserData(userID)
+          )
+        );
+        setCommentUsers(users);
+      };
+      fetchCommentsData();
+    }
+  }, [currentIndex, articles]);
 
   function ScrollContainer() {
     const [ref, isVisible] = useInView({
       threshold: 0.2,
     });
 
+    // --------------------------CODE FOR REACTION BUTTONS--------------------------------
+    const [likePressed, setLikePressed] = useState(false);
+    const [dislikePressed, setDislikePressed] = useState(false);
+
+    const handleLike = (index, article) => {
+      let articleID = article.url.replace(/\//g, "_");
+      // setLikePressed((a) => !a);
+      // setDislikePressed(false); // Reset the dislike state
+
+      setArticles((currentArticles) => {
+        return currentArticles.map((article, i) => {
+          if (i === index) {
+            // Toggle the liked state of the article
+            let newLikes = article.likes;
+            let newDislikes = article.dislikes;
+
+            if (article.userHasLiked) {
+              newLikes--; // If already liked, decrement likes
+            } else {
+              newLikes++; // If not liked, increment likes
+            }
+
+            if (article.userHasDisliked) {
+              newDislikes--;
+            }
+
+            const updatedArticle = {
+              ...article,
+              likes: newLikes,
+              dislikes: newDislikes,
+              userHasLiked: !article.userHasLiked,
+              userHasDisliked: false,
+            };
+            return updatedArticle;
+          }
+          return article;
+        });
+      });
+      saveLikeOrDislike(articleID, auth, "like");
+      // fetchLikesAndDislikesCount(articleID);
+    };
+
+    const handleDislike = (index, article) => {
+      let articleID = article.url.replace(/\//g, "_");
+      // setDislikePressed((a) => !a);
+      // setLikePressed(false); // Reset the like state
+
+      setArticles((articles) => {
+        return articles.map((article, i) => {
+          if (i === index) {
+            // Toggle the liked state of the article
+            let newLikes = article.likes;
+            let newDislikes = article.dislikes;
+
+            if (article.userHasDisliked) {
+              newDislikes--; // If already disliked, decrement dislikes
+            } else {
+              newDislikes++;
+            }
+
+            if (article.userHasLiked) {
+              newLikes--;
+            }
+
+            const updatedArticle = {
+              ...article,
+              likes: newLikes,
+              dislikes: newDislikes,
+              userHasDisliked: !article.userHasDisliked,
+              userHasLiked: false,
+            };
+            return updatedArticle;
+          }
+          return article;
+        });
+      });
+      saveLikeOrDislike(articleID, auth, "dislike");
+    };
+
+    const handlePostComment = (index) => {
+      const articleID = articles[index].url.replace(/\//g, "_");
+      const commentValue = document.getElementById("comment").value;
+      const user = auth.currentUser;
+
+      if (commentValue.lenght === 0) {
+        return;
+      }
+
+      if (user) {
+        setArticles((articles) => {
+          return articles.map((article, i) => {
+            if (i === index) {
+              const comments = article.comments || {};
+              const updatedArticle = {
+                ...comments,
+                [user.uid]: commentValue,
+              };
+              return { ...article, comments: updatedArticle };
+            }
+            return article;
+          });
+        });
+      } else {
+        alert("Only logged in users can post a comment!");
+      }
+
+      uploadCommentToDatabase(articleID, commentValue);
+
+      document.getElementById("comment").value = "";
+    };
+
+    const uploadCommentToDatabase = async (articleID, comment) => {
+      const docRef = doc(
+        db,
+        "articles",
+        date.toISOString().split("T")[0],
+        articleCategory,
+        articleID
+      );
+      const user = auth.currentUser;
+
+      if (user) {
+        await updateDoc(docRef, {
+          comments: { [`${user.uid}`]: comment },
+        });
+      } else {
+        alert("You cannot post a comment");
+      }
+    };
+
+    const saveLikeOrDislike = async (articleID, auth, type) => {
+      const timestamp = new Date();
+      const userId = auth.currentUser.uid;
+      const customDocId = `${articleID}_${userId}`;
+
+      const articleInteractionRef = collection(db, "articleInteraction");
+      const docRef = doc(articleInteractionRef, customDocId);
+
+      const articleRef = doc(
+        db,
+        "articles",
+        date.toISOString().split("T")[0],
+        articleCategory,
+        articleID
+      );
+      console.log(date);
+
+      try {
+        const docSnapshot = await getDocs(
+          query(
+            articleInteractionRef,
+            where("article_id", "==", articleID),
+            where("user_id", "==", userId)
+          )
+        );
+
+        if (docSnapshot.size > 0) {
+          const existingDocData = docSnapshot.docs[0].data();
+          const docToDelete = doc(articleInteractionRef, customDocId);
+          if (type === "dislike" && existingDocData.type === "like") {
+            await setDoc(docRef, {
+              user_id: userId,
+              article_id: articleID,
+              type: type, // 'like' or 'dislike'
+              data: timestamp,
+            });
+            updateDoc(articleRef, {
+              likes: increment(-1),
+              dislikes: increment(1),
+            });
+          } else if (type === "like" && existingDocData.type === "dislike") {
+            await setDoc(docRef, {
+              user_id: userId,
+              article_id: articleID,
+              type: type, // 'like' or 'dislike'
+              data: timestamp,
+            });
+            updateDoc(articleRef, {
+              likes: increment(1),
+              dislikes: increment(-1),
+            });
+          } else if (type === "like" && existingDocData.type === "like") {
+            await deleteDoc(docToDelete);
+            updateDoc(articleRef, { likes: increment(-1) });
+          } else if (type === "dislike" && existingDocData.type === "dislike") {
+            await deleteDoc(docToDelete);
+            updateDoc(articleRef, { dislikes: increment(-1) });
+          }
+        } else {
+          await setDoc(docRef, {
+            user_id: userId,
+            article_id: articleID,
+            type: type, // 'like' or 'dislike'
+            data: timestamp,
+          });
+          if (type === "like") {
+            updateDoc(articleRef, { likes: increment(1) });
+          } else if (type === "dislike") {
+            updateDoc(articleRef, { dislikes: increment(1) });
+          }
+        }
+      } catch (error) {
+        console.error("Error adding/deleting like/dislike: ", error);
+      }
+    };
+
+    // --------------------------CODE FOR REACTION BUTTONS--------------------------------
+
     const loadMoreArticles = () => {
+      const yesterday = date.toISOString().split("T")[0];
+      console.log(yesterday);
       setPage(page + 1);
-      fetchTopArticles(articleLanguage, articleCategory, true);
+
+      fetchArticlesFromDatabase(yesterday, articleCategory)
+        .then((filteredArticles) => {
+          console.log("These are the articles: ", filteredArticles);
+          setArticles((prevArticles) => [...prevArticles, ...filteredArticles]);
+
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+
+      // if (articles.length === 0) {
+      //   fetchTopArticles(articleLanguage, articleCategory, yesterday)
+      //     .then((object) => {
+      //       console.log(object);
+      //       setArticles(articles);
+      //     })
+      //     .catch((error) => {
+      //       console.log(error.message);
+      //     });
+      // }
+
+      date.setDate(date.getDate() - 1);
+      setArticleDate(date);
     };
 
     useEffect(() => {
@@ -228,12 +421,7 @@ const HomePage = () => {
         <div className="whole-container">
           <div className="List">
             {articles.map((article, index) => (
-              <a
-                href={article.url} // Set the URL from the article data
-                target="_blank" // Opens the link in a new tab
-                key={index}
-                className="ClickableContainer"
-              >
+              <div>
                 {/* <div
                 className={`${
                   article.urlToImage ? "WithImage" : "WithoutImage"
@@ -241,39 +429,87 @@ const HomePage = () => {
                 key={index}
               > */}
                 <div className="Item" key={index}>
-                  <div className="ImageContainer">
-                    <img
-                      src={article.urlToImage}
-                      alt={article.description}
-                      className="ResponsiveImage"
-                    />
-                  </div>
-                  <div className="articleInfo">
-                    <h1 className="article-author">{article.author}</h1>
-                    <h2 className="article-title">{article.title}</h2>
-                    <div className="article-bottom">
-                      <h1 className="article-source">{article.source.name}</h1>
-                      <h1 className="article-publishedAt">
-                        {
-                          new Date(article.publishedAt)
-                            .toISOString()
-                            .split("T")[0]
-                        }
-                      </h1>
+                  <a
+                    href={article.url} // Set the URL from the article data
+                    target="_blank" // Opens the link in a new tab
+                    key={index}
+                    className="ClickableContainer"
+                    onMouseEnter={() => setCurrentIndex(index)}
+                    onMouseLeave={() => setCurrentIndex(index)}
+                  >
+                    <div className="main-article-window">
+                      <div className="ImageContainer">
+                        <img
+                          src={article.urlToImage}
+                          alt={article.description}
+                          className="ResponsiveImage"
+                        />
+                      </div>
+                      <div className="articleInfo">
+                        <h1 className="article-author">{article.author}</h1>
+                        <h2 className="article-title">{article.title}</h2>
+                        <div className="article-bottom">
+                          <h1 className="article-source">{article.source}</h1>
+                          <h1 className="article-publishedAt">
+                            {article.publishedAt}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                  <div className="ReactionButtons-container">
+                    <div className="reaction-button-text">
+                      <button
+                        className={`ReactionButtons ${
+                          article.userHasLiked ? "invert" : ""
+                        }`}
+                        onClick={() => handleLike(index, article)}
+                      >
+                        <i className="fa fa-thumbs-up" aria-hidden="true"></i>
+                      </button>
+                      <p className="likes-text">{article.likes}</p>
+                    </div>
+                    <div className="reaction-button-text">
+                      <button
+                        className={`ReactionButtons ${
+                          article.userHasDisliked ? "invert" : ""
+                        }`}
+                        onClick={() => handleDislike(index, article)}
+                      >
+                        <i className="fa fa-thumbs-down" aria-hidden="true"></i>
+                      </button>
+                      <p className="likes-text">{article.dislikes}</p>
+                    </div>
+                    <div
+                      className="reaction-button-text"
+                      onClick={handleCommentWindowOpen}
+                    >
+                      <button className="ReactionButtons">
+                        <i className="fa fa-comment" aria-hidden="true"></i>
+                      </button>
+                      <p className="likes-text">
+                        {Object.keys(article.comments).length}
+                      </p>
+                    </div>
+                    <div>
+                      <button className="ReactionButtons">
+                        <i className="fa fa-share-alt" aria-hidden="true"></i>
+                      </button>
                     </div>
                   </div>
                 </div>
 
                 {/* </div> */}
-              </a>
+              </div>
             ))}
 
             <div className="Loader" ref={ref}>
               <i className="fa fa-spinner fa-spin fa-2x fa-fw"></i>
             </div>
           </div>
-          <ReactionButtons setCommentWindowVisible={setCommentWindowVisible} />
         </div>
+
+        {/* --------------------- COMMENT WINDOW -------------------------------------*/}
         {isCommentWindowVisible && (
           <div className="main_comment-window">
             <button
@@ -284,51 +520,25 @@ const HomePage = () => {
             </button>
             <div className="comment-content">
               <div className="scrolling-comments">
-                <div className="show-comments">
-                  <img className="other-user-profileft" src={profile1}></img>
-                  <div className="other-user-comments">
-                    <p className="comment-username">hawkvirtue</p>
-                    <p className="users-comment">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Phasellus interdum scelerisque nulla eu blandit. Aliquam
-                      quis magna scelerisque, eleifend nunc nec, rutrum nisi.
-                    </p>
-                  </div>
-                </div>
-                <div className="show-comments">
-                  <img className="other-user-profileft" src={profile2}></img>
-                  <div className="other-user-comments">
-                    <p className="comment-username">leftrostrum</p>
-                    <p className="users-comment">
-                      Morbi vitae condimentum libero, facilisis luctus elit.
-                      Suspendisse viverra dui at rhoncus posuere.
-                    </p>
-                  </div>
-                </div>
-                <div className="show-comments">
-                  <img className="other-user-profileft" src={profile3}></img>
-                  <div className="other-user-comments">
-                    <p className="comment-username">angeranalyst</p>
-                    <p className="users-comment">
-                      Aliquam erat volutpat. Curabitur dapibus ligula pretium
-                      maximus auctor. Donec dictum tincidunt orci eu
-                      ullamcorper.
-                    </p>
-                  </div>
-                </div>
-                <div className="show-comments">
-                  <img
-                    className="other-user-profileft"
-                    src={defaultProfileFT}
-                  ></img>
-                  <div className="other-user-comments">
-                    <p className="comment-username">biddywrestling</p>
-                    <p className="users-comment">
-                      Morbi vitae condimentum libero, facilisis luctus elit.
-                      Suspendisse viverra dui at rhoncus posuere.
-                    </p>
-                  </div>
-                </div>
+                {articles[currentIndex] &&
+                  articles[currentIndex]?.comments &&
+                  Object.entries(articles[currentIndex]?.comments).map(
+                    ([userID, comment], index) => {
+                      const username = commentUsers[index]?.username;
+                      return (
+                        <div className="show-comments" key={index}>
+                          <img
+                            className="other-user-profileft"
+                            src={defaultProfileFT}
+                          ></img>
+                          <div className="other-user-comments">
+                            <p className="comment-username">{username}</p>
+                            <p className="users-comment">{comment}</p>
+                          </div>
+                        </div>
+                      );
+                    }
+                  )}
               </div>
               <div className="user-comment-input">
                 <input
@@ -339,7 +549,7 @@ const HomePage = () => {
                 />
                 <input
                   type="submit"
-                  // onClick={() => handleLogIn()}
+                  onClick={() => handlePostComment(currentIndex)}
                   className="submit-comment-button"
                   value="Comment"
                 />
@@ -347,6 +557,7 @@ const HomePage = () => {
             </div>
           </div>
         )}
+        {/* --------------------- COMMENT WINDOW -------------------------------------*/}
         {/* </div> */}
       </>
     );
@@ -355,7 +566,10 @@ const HomePage = () => {
   return (
     <>
       {/* <NavBar onLanguageChange={handleLanguageChange} /> */}
-      <div className="HomePageContainer">
+      <div
+        className="HomePageContainer"
+        style={{ overflowY: allowScrolling ? "scroll" : "hidden" }}
+      >
         <motion.div
           initial="sidebarInitial"
           animate="sidebarIn"
@@ -363,7 +577,10 @@ const HomePage = () => {
           variants={pageVariants}
           transition={pageTransition}
         >
-          <SideBar onCategoryChange={handleCategoryChange} />
+          <SideBar
+            onCategoryChange={handleCategoryChange}
+            onCountryChange={handleLanguageChange}
+          />
         </motion.div>
 
         <motion.div

@@ -1,11 +1,11 @@
 import "../css/sidebar.css";
 import "../assets/font-awesome/css/font-awesome.min.css";
 
-import { auth } from "../App";
+import { auth } from "../firebaseConfig";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SideBar = ({ onCategoryChange }) => {
+const SideBar = ({ onCategoryChange, onCountryChange }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -16,6 +16,7 @@ const SideBar = ({ onCategoryChange }) => {
   };
 
   const handleOptionSelect = (option) => {
+    onCountryChange(option);
     setSelectedOption(option);
     setIsDropdownOpen(false);
   };
@@ -113,7 +114,7 @@ const SideBar = ({ onCategoryChange }) => {
                     className="setting-description-text"
                     style={{ marginLeft: 15 }}
                   >
-                    <h10>Where are you from?</h10>
+                    <p className="h10tag">Where are you from?</p>
                   </div>
                 </div>
                 <div

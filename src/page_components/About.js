@@ -4,6 +4,7 @@ import banner from "../assets/About/ktu.edu-baneriai_Bendrinis-1140x400-1.jpg";
 import transition from "../transition";
 
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 const pageVariantsAboutPage = {
   initial: {
@@ -30,6 +31,12 @@ const pageTransition = {
 };
 
 const About = () => {
+  const allowScrolling = true;
+
+  useEffect(() => {
+    document.body.style.overflowY = allowScrolling ? "scroll" : "hidden";
+  }, []);
+
   return (
     <>
       <motion.div
@@ -39,23 +46,23 @@ const About = () => {
         variants={pageVariantsAboutPage}
         transition={pageTransition}
       >
-        <section class="page-section" id="about">
-          <div class="container-about">
-            <div class="text-center">
-              <h2 class="section-heading text-uppercase">About</h2>
-              <h3 class="section-subheading text-muted">
+        <section className="page-section" id="about">
+          <div className="container-about">
+            <div className="text-center">
+              <h2 className="section-heading text-uppercase">About</h2>
+              <h3 className="section-subheading text-muted">
                 "Quick news for you"
               </h3>
             </div>
-            <ul class="timeline">
+            <ul className="timeline">
               <li>
                 {/* <div class="timeline-image-container"></div> */}
-                <div class="timeline-panel">
-                  <div class="timeline-heading">
-                    <h4 class="subheading">Our Goal</h4>
+                <div className="timeline-panel">
+                  <div className="timeline-heading">
+                    <h4 className="subheading">Our Goal</h4>
                   </div>
-                  <div class="timeline-body">
-                    <p class="text-muted">
+                  <div className="timeline-body">
+                    <p className="text-muted">
                       At InfoFlow, our primary goal is to revolutionize the
                       news-reading experience for the modern generation. We
                       understand that in an era dominated by fast-paced
@@ -68,14 +75,14 @@ const About = () => {
                   </div>
                 </div>
               </li>
-              <li class="timeline-inverted">
-                <div class="timeline-image"></div>
-                <div class="timeline-panel">
-                  <div class="timeline-heading">
-                    <h4 class="subheading">What Sets Us Apart</h4>
+              <li className="timeline-inverted">
+                <div className="timeline-image"></div>
+                <div className="timeline-panel">
+                  <div className="timeline-heading">
+                    <h4 className="subheading">What Sets Us Apart</h4>
                   </div>
-                  <div class="timeline-body">
-                    <p class="text-muted">
+                  <div className="timeline-body">
+                    <p className="text-muted">
                       Unlike conventional news outlets, we recognize the
                       importance of merging information with entertainment. Our
                       articles are crafted not just to inform but to captivate,
@@ -89,13 +96,13 @@ const About = () => {
                 </div>
               </li>
               <li>
-                <div class="timeline-image"></div>
-                <div class="timeline-panel">
-                  <div class="timeline-heading">
-                    <h4 class="subheading">Empowering Voices</h4>
+                <div className="timeline-image"></div>
+                <div className="timeline-panel">
+                  <div className="timeline-heading">
+                    <h4 className="subheading">Empowering Voices</h4>
                   </div>
-                  <div class="timeline-body">
-                    <p class="text-muted">
+                  <div className="timeline-body">
+                    <p className="text-muted">
                       In our pursuit of delivering diverse and thought-provoking
                       content, we are committed to providing a platform for
                       emerging writers, journalists, and opinion leaders. We
@@ -109,14 +116,14 @@ const About = () => {
                 </div>
               </li>
 
-              <li class="timeline-inverted">
-                <div class="timeline-image"></div>
-                <div class="timeline-panel">
-                  <div class="timeline-heading">
-                    <h4 class="subheading">Join Us on the Journey</h4>
+              <li className="timeline-inverted">
+                <div className="timeline-image"></div>
+                <div className="timeline-panel">
+                  <div className="timeline-heading">
+                    <h4 className="subheading">Join Us on the Journey</h4>
                   </div>
-                  <div class="timeline-body">
-                    <p class="text-muted">
+                  <div className="timeline-body">
+                    <p className="text-muted">
                       As we navigate the ever-evolving digital landscape, we
                       invite you to join us on this exciting journey. Explore
                       the world of news through a lens that values both
@@ -130,8 +137,8 @@ const About = () => {
                 </div>
               </li>
 
-              <li class="timeline-inverted">
-                <div class="timeline-image"></div>
+              <li className="timeline-inverted">
+                <div className="timeline-image"></div>
               </li>
             </ul>
           </div>

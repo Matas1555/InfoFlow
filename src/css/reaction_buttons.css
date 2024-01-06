@@ -1,10 +1,16 @@
 .ReactionButtons-container {
   position: relative;
   display: flex;
+  float: right;
+  /* align-items: end; */
+  justify-content: center;
   flex-direction: column;
   gap: 11vh;
-  left: 2vh;
-  top: 4vh;
+  left: 5vh;
+  top: 0vh;
+  width: 20%;
+  /* margin-left: auto; */
+  /* margin-right: 7%; */
 }
 
 /* https://uiverse.io/andrew-demchenk0/itchy-donkey-64 */
@@ -13,6 +19,7 @@
   --main-color: #343a40;
   width: 9vh;
   height: 9vh;
+  /* margin-right: 10px; */
   border-radius: 100%;
   border: 2px solid var(--main-color);
   background-color: var(--bg-color);
@@ -24,12 +31,20 @@
   transition: all 0.2s;
   cursor: pointer;
 }
+
+.invert {
+  transition: 0.2s linear;
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg)
+    brightness(102%) contrast(102%);
+}
 .ReactionButtons:hover {
   background-color: #dee2e6;
 }
 .ReactionButtons:active {
   box-shadow: 0px 0px var(--main-color);
   transform: translate(3px, 3px);
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg)
+    brightness(102%) contrast(102%);
 }
 
 .ReactionButtons:focus {
