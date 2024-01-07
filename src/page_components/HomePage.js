@@ -10,6 +10,7 @@ import "../css/reaction_buttons.css";
 
 import "../css/homePage.css";
 import "../css/comments.css";
+import "../css/share.css";
 import defaultProfileFT from "../assets/default_profile.png";
 import profile1 from "../assets/profileft/images.jpg";
 import profile2 from "../assets/profileft/images (1).jpg";
@@ -94,11 +95,11 @@ const HomePage = () => {
   const [articleCategory, setArticleCategory] = useState("general");
   const [articleLanguage, setArticleCLanguage] = useState("us");
   const [isCommentWindowVisible, setCommentWindowVisible] = useState(false);
+  const [isShareWindowVisible, setShareWindowVisible] = useState(false);
   const [commentUsers, setCommentUsers] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [date, setArticleDate] = useState(new Date());
   const allowScrolling = false;
-
   //Create a date variable
   // const today = new Date();
   // const yesterday = new Date(today);
@@ -125,36 +126,39 @@ const HomePage = () => {
     const today = new Date();
     const dayBefore = new Date(today);
     dayBefore.setDate(today.getDate() - 1);
-
     const yesterday = dayBefore.toISOString().split("T")[0];
 
-    await fetchTopArticles(language, articleCategory, yesterday).then(
-      (articles) => {
-        if (articles.length === 0) {
-          // If filteredArticles is empty, subtract one day from the date and try again
-          handleLanguageChange(language);
-        } else {
-          uploadArticlesLanguage(
-            articles,
-            yesterday,
-            articleCategory,
-            language
-          );
-        }
-      }
-    );
-
-    await fetchCountryArticlesFromDatabase(
-      yesterday,
-      articleCategory,
-      language
-    ).then((articles) => {
-      setArticles(articles);
-      setCurrentIndex(0);
-    });
-
-    setArticleDate(dayBefore);
-    setArticleCLanguage(language);
+    if (language === "us") {
+      await fetchArticlesFromDatabase(yesterday, articleCategory)
+        .then((filteredArticles) => {
+          console.log("These are the articles: ", filteredArticles);
+          if (filteredArticles.length === 0) {
+            // If filteredArticles is empty, subtract one day from the date and try again
+            date.setDate(date.getDate() - 1);
+            setArticleDate(date);
+            handleLanguageChange(language);
+          } else {
+            setArticles(filteredArticles);
+            setArticleCLanguage(language);
+            date.setDate(date.getDate() - 1);
+            setArticleDate(date);
+          }
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    } else {
+      await fetchCountryArticlesFromDatabase(
+        yesterday,
+        "general",
+        language
+      ).then((articles) => {
+        console.log(articles);
+        setArticles(articles);
+        setArticleDate(dayBefore);
+        setArticleCLanguage(language);
+      });
+    }
   };
 
   const handleCommentWindowClose = () => {
@@ -163,6 +167,29 @@ const HomePage = () => {
 
   const handleCommentWindowOpen = () => {
     setCommentWindowVisible(true);
+  };
+
+  const handleShareWindowOpen = () => {
+    setShareWindowVisible(true);
+  };
+
+  const handleShareWindowClose = () => {
+    setShareWindowVisible(false);
+  };
+
+  const handleCopyArticleLink = () => {
+    // Get the text field
+    var copyText = document.getElementById("article-link").value;
+
+    const copyContent = async () => {
+      try {
+        await navigator.clipboard.writeText(copyText);
+        console.log("Content copied to clipboard");
+      } catch (err) {
+        console.error("Failed to copy: ", err);
+      }
+    };
+    copyContent();
   };
 
   const fetchUserData = async (userID) => {
@@ -373,6 +400,8 @@ const HomePage = () => {
             await setDoc(docRef, {
               user_id: userId,
               article_id: articleID,
+              article_date: articleDate,
+              article_category: articleCategory,
               type: type, // 'like' or 'dislike'
               data: timestamp,
             });
@@ -384,6 +413,8 @@ const HomePage = () => {
             await setDoc(docRef, {
               user_id: userId,
               article_id: articleID,
+              article_date: articleDate,
+              article_category: articleCategory,
               type: type, // 'like' or 'dislike'
               data: timestamp,
             });
@@ -402,6 +433,8 @@ const HomePage = () => {
           await setDoc(docRef, {
             user_id: userId,
             article_id: articleID,
+            article_date: articleDate,
+            article_category: articleCategory,
             type: type, // 'like' or 'dislike'
             data: timestamp,
           });
@@ -447,17 +480,6 @@ const HomePage = () => {
         .catch((error) => {
           console.log(error.message);
         });
-
-      // if (articles.length === 0) {
-      //   fetchTopArticles(articleLanguage, articleCategory, yesterday)
-      //     .then((object) => {
-      //       console.log(object);
-      //       setArticles(articles);
-      //     })
-      //     .catch((error) => {
-      //       console.log(error.message);
-      //     });
-      // }
     };
 
     useEffect(() => {
@@ -471,6 +493,10 @@ const HomePage = () => {
         loadMoreArticles();
       }
     }, [currentIndex]);
+
+    // useEffect(() => {
+    //   ScrollContainer();
+    // }, [reloadScrollContainer]);
 
     return (
       <>
@@ -553,7 +579,7 @@ const HomePage = () => {
                           {Object.keys(article.comments).length}
                         </p>
                       </div>
-                      <div>
+                      <div onClick={handleShareWindowOpen}>
                         <button className="ReactionButtons">
                           <i className="fa fa-share-alt" aria-hidden="true"></i>
                         </button>
@@ -572,6 +598,38 @@ const HomePage = () => {
             </div>
           </div>
         </div>
+
+        {isShareWindowVisible && (
+          <div className="main_share-window">
+            <button
+              className="close-share-window"
+              onClick={handleShareWindowClose}
+            >
+              X
+            </button>
+            <div className="share-info">
+              <div className="share-window-text">
+                <p>Share the article with your friends!</p>
+              </div>
+              <div className="copy-link">
+                <div className="article-link">
+                  <input
+                    id="article-link"
+                    className="input-comment-field"
+                    value={articles[currentIndex].url}
+                    readOnly
+                  ></input>
+                </div>
+                <button
+                  className="submit-comment-button"
+                  onClick={handleCopyArticleLink}
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* --------------------- COMMENT WINDOW -------------------------------------*/}
         {isCommentWindowVisible && (

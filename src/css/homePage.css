@@ -154,6 +154,6 @@
   background-size: cover;
   background-position: center;
   left: 0;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
   /* z-index: 10; */
 }

@@ -8,6 +8,7 @@ import { auth } from "../firebaseConfig";
 import { realtimeDatabase } from "../firebaseConfig";
 import { ref, set, update, onValue } from "firebase/database";
 import Profile from "./Profile";
+import LikedPosts from "./LikedPosts";
 
 export default function NavBar({ onLanguageChange }) {
   const [isPopupVisible, setPopupVisible] = useState(false);
@@ -76,55 +77,6 @@ export default function NavBar({ onLanguageChange }) {
           <img className="logo" src={InfoFlowIcon} alt="logo"></img>
         </Link>
 
-        {/*--------------- Popup window html -------------------*/}
-        {/* <button className="button button-dark" onClick={showPopup}>
-          Choose country
-        </button>
-        {isPopupVisible && (
-          <form className="popup" id="popup">
-            <p>Please select your country:</p>
-            <input type="radio" name="lang" id="ar" value="ar" />
-            <label htmlFor="ar">Saudi arabia &#128514; </label>
-            <br />
-            <input type="radio" name="lang" id="de" value="de" />
-            <label htmlFor="de">Germany 🇩🇪 </label>
-            <br />
-            <input type="radio" name="lang" id="us" value="us" />
-            <label htmlFor="us">United States 🇺🇸 </label>
-            <br />
-            <input type="radio" name="lang" id="es" value="es" />
-            <label htmlFor="es">Spain 🇪🇸 </label>
-            <br />
-            <input type="radio" name="lang" id="fr" value="fr" />
-            <label htmlFor="fr">France 🇫🇷 </label>
-            <br />
-            <input type="radio" name="lang" id="he" value="he" />
-            <label htmlFor="he">Isreal 🇮🇱 </label>
-            <br />
-            <input type="radio" name="lang" id="it" value="it" />
-            <label htmlFor="it">Italy 🇮🇹 </label>
-            <br />
-            <input type="radio" name="lang" id="nl" value="nl" />
-            <label htmlFor="nl">Netherlands 🇳🇱 </label>
-            <br />
-            <input type="radio" name="lang" id="no" value="no" />
-            <label htmlFor="no">Norway 🇳🇴 </label>
-            <br />
-            <input type="radio" name="lang" id="pt" value="pt" />
-            <label htmlFor="pt">Portugal 🇵🇹 </label>
-            <br />
-            <input type="radio" name="lang" id="ru" value="ru" />
-            <label htmlFor="ru">Russia 🇷🇺 </label>
-            <br />
-            <input type="radio" name="lang" id="sv" value="sv" />
-            <label htmlFor="sv">Sweden 🇸🇪 </label>
-            <br />
-            <button onClick={() => handleClick()}>Submit</button>
-          </form>
-        )}
-        {isPopupVisible && <div className="overlay" onClick={hidePopup}></div>} */}
-        {/*--------------- Popup window html -------------------*/}
-
         <nav>
           <ul className="nav_bar">
             <li>
@@ -139,6 +91,17 @@ export default function NavBar({ onLanguageChange }) {
                   <div className="nav_about">Login</div>
                 </Link>
               )}
+            </li>
+            <li>
+              {user ? (
+                <Link
+                  to="/LikedPosts"
+                  onMouseEnter={() => setActiveNavItem("login")}
+                  onMouseLeave={() => setActiveNavItem("")}
+                >
+                  <div className="nav_about">Liked articles</div>
+                </Link>
+              ) : null}
             </li>
             <li className="animate">
               <Link
