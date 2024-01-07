@@ -140,7 +140,7 @@ export default function NavBar({ onLanguageChange }) {
                 </Link>
               )}
             </li>
-            <li>
+            <li className="animate">
               <Link
                 to="/Contact"
                 onMouseEnter={() => setActiveNavItem("contact")}

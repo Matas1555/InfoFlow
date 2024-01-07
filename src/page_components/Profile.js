@@ -3,6 +3,7 @@ import "../css/profile.css";
 import { auth, realtimeDatabase } from "../firebaseConfig";
 import { getDatabase, ref, get } from "firebase/database";
 import { useEffect, useState } from "react";
+import Dropdown from "react-bootstrap/Dropdown";
 
 export default function Profile() {
   const currentUser = auth.currentUser;
@@ -35,7 +36,7 @@ export default function Profile() {
   return (
     <div className="avatar-container">
       <img src={photoURL} className="avatar" alt="User Avatar" />
-      <p>{username}</p>
+      <p className="avatar-username">{username}</p>
     </div>
   );
 }

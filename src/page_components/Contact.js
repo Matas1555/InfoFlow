@@ -28,6 +28,10 @@ const Contact = () => {
         console.log(error.text);
       }
     );
+
+    document.getElementById("name").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("message").value = "";
   };
 
   // const handleContact = () => {
@@ -72,6 +76,7 @@ const Contact = () => {
                 <form ref={form} onSubmit={sendEmail} className="form">
                   <div className="username">
                     <input
+                      id="name"
                       type="text"
                       placeholder="Enter your Name"
                       name="from_name"
@@ -79,6 +84,7 @@ const Contact = () => {
                   </div>
                   <div className="useremail">
                     <input
+                      id="email"
                       type="email"
                       placeholder="Enter your email"
                       name="userEmail"
@@ -87,6 +93,7 @@ const Contact = () => {
                   </div>
                   <div className="usermessage">
                     <textarea
+                      id="message"
                       placeholder="Enter your message"
                       name="message"
                       required

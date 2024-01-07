@@ -66,6 +66,71 @@ export const uploadArticles = async (articles, date, category) => {
     });
 };
 
+export const uploadArticlesLanguage = async (
+  articles,
+  date,
+  category,
+  country
+) => {
+  let batch = writeBatch(db);
+  let actualDate;
+  if (articles[0].publishedAt != null) {
+    actualDate = new Date(articles[0].publishedAt).toISOString().split("T")[0];
+  } else {
+    actualDate = date;
+  }
+
+  //Iterate through article array
+  let promises = articles.map((article) => {
+    const payload = {
+      author: article.author,
+      description: article.description,
+      publishedAt: actualDate,
+      source: article.source.name,
+      title: article.title,
+      url: article.url,
+      urlToImage: article.urlToImage,
+      likes: 0,
+      dislikes: 0,
+      comments: [],
+    };
+
+    let categoryLang = category.concat(country);
+
+    let collectionRef = collection(db, "articles", actualDate, categoryLang);
+
+    let encodedUrl = payload.url.replace(/\//g, "_");
+
+    let docRef = doc(db, "articles", actualDate, categoryLang, encodedUrl);
+
+    //Check if database already has the same articles, if not add new ones
+    let querySnapshot = query(collectionRef, where("url", "==", encodedUrl));
+    return getDocs(querySnapshot)
+      .then((docs) => {
+        if (docs.empty) {
+          // No matching articles found, add the new article
+          batch.set(docRef, payload);
+        }
+      })
+      .catch((error) => {
+        console.error("Error querying Firestore: ", error);
+      });
+  });
+
+  // Wait for all Promises to resolve
+  Promise.all(promises)
+    .then(() => {
+      // Commit the batch after all documents have been added
+      return batch.commit();
+    })
+    .then(() => {
+      console.log("Batch write completed successfully");
+    })
+    .catch((error) => {
+      console.error("Error writing batch: ", error);
+    });
+};
+
 export const fetchTopArticles = async (country, category, date) => {
   const apiKey = "2a797461e90448799c9c602abb432b4f";
   console.log("Fetching news...");
@@ -167,6 +232,26 @@ export const fetchArticlesFromDatabase = async (date, category) => {
     let article = await fetchLikesAndDislikesCount(doc.data());
     let updatedArticle = await fetchUserInteraction(article);
     articles.push(updatedArticle);
+  }
+
+  return articles;
+};
+
+export const fetchCountryArticlesFromDatabase = async (
+  date,
+  category,
+  country
+) => {
+  const categoryLang = category.concat(country);
+  let collectionRef = collection(db, "articles", date, categoryLang);
+
+  let querySnapshot = await getDocs(collectionRef);
+  let articles = [];
+  for (let doc of querySnapshot.docs) {
+    let article = doc.data();
+    // let article = await fetchLikesAndDislikesCount(doc.data());
+    // let updatedArticle = await fetchUserInteraction(article);
+    articles.push(article);
   }
 
   return articles;

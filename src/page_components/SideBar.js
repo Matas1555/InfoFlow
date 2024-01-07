@@ -16,8 +16,12 @@ const SideBar = ({ onCategoryChange, onCountryChange }) => {
   };
 
   const handleOptionSelect = (option) => {
-    onCountryChange(option);
-    setSelectedOption(option);
+    onCategoryChange(option);
+    setIsDropdownOpen(false);
+  };
+
+  const handleCountrySelect = (country) => {
+    onCountryChange(country);
     setIsDropdownOpen(false);
   };
 
@@ -36,6 +40,7 @@ const SideBar = ({ onCategoryChange, onCountryChange }) => {
 
   const handleLogout = () => {
     auth.signOut();
+    window.location.reload();
     navigate("/");
     console.log("logged out");
   };
@@ -151,73 +156,73 @@ const SideBar = ({ onCategoryChange, onCountryChange }) => {
                   <ul className="dropdown">
                     <li
                       className="item"
-                      onClick={() => handleOptionSelect("Saudi arabia")}
+                      onClick={() => handleCountrySelect("ar")}
                     >
                       <label htmlFor="ar">Saudi arabia &#128514; </label>
                     </li>
                     <li
                       className="item"
-                      onClick={() => handleOptionSelect("Germany")}
+                      onClick={() => handleCountrySelect("de")}
                     >
                       <label htmlFor="de">Germany 🇩🇪 </label>
                     </li>
                     <li
                       className="item"
-                      onClick={() => handleOptionSelect("United States")}
+                      onClick={() => handleCountrySelect("us")}
                     >
                       <label htmlFor="us">United States 🇺🇸 </label>
                     </li>
                     <li
                       className="item"
-                      onClick={() => handleOptionSelect("Spain")}
+                      onClick={() => handleCountrySelect("es")}
                     >
                       <label htmlFor="es">Spain 🇪🇸 </label>
                     </li>
                     <li
                       className="item"
-                      onClick={() => handleOptionSelect("France")}
+                      onClick={() => handleCountrySelect("fr")}
                     >
                       <label htmlFor="fr">France 🇫🇷 </label>
                     </li>
                     <li
                       className="item"
-                      onClick={() => handleOptionSelect("Isreal")}
+                      onClick={() => handleCountrySelect("he")}
                     >
                       <label htmlFor="he">Isreal 🇮🇱 </label>
                     </li>
                     <li
                       className="item"
-                      onClick={() => handleOptionSelect("Italy")}
+                      onClick={() => handleCountrySelect("it")}
                     >
                       <label htmlFor="it">Italy 🇮🇹 </label>
                     </li>
                     <li
                       className="item"
-                      onClick={() => handleOptionSelect("Netherlands")}
+                      onClick={() => handleCountrySelect("nl")}
                     >
                       <label htmlFor="nl">Netherlands 🇳🇱 </label>
                     </li>
                     <li
                       className="item"
-                      onClick={() => handleOptionSelect("Norway")}
+                      onClick={() => handleCountrySelect("no")}
                     >
                       <label htmlFor="no">Norway 🇳🇴 </label>
                     </li>
                     <li
                       className="item"
-                      onClick={() => handleOptionSelect("Portugal")}
+                      onClick={() => handleCountrySelect("pt")}
                     >
                       <label htmlFor="pt">Portugal 🇵🇹 </label>
                     </li>
                     <li
                       className="item"
-                      onClick={() => handleOptionSelect("Russia")}
+                      onClick={() => handleCountrySelect("ru")}
                     >
                       <label htmlFor="ru">Russia 🇷🇺 </label>
                     </li>
                     <li
                       className="item"
-                      onClick={() => handleOptionSelect("Sweden")}
+                      onClick={() => handleCountrySelect("sv")}
                     >
                       <label htmlFor="sv">Sweden 🇸🇪 </label>
                     </li>

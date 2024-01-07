@@ -53,21 +53,30 @@ a {
   color: white;
   font-size: 25px;
   background-color: #212529;
-  padding: 20px 30px 20px 30px;
-  margin-left: 5px;
+  /* padding: 20px 30px 20px 30px; */
+  margin-left: 50px;
+  margin-right: 40px;
+  vertical-align: middle;
 }
 
-.nav_bar li div:hover {
+.nav_bar li div.nav_about {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70px; /* Assuming you want the div to be as tall as the header */
+}
+
+.nav_bar li div.nav_about:hover {
   color: rgb(192, 188, 188);
   background-color: #212529;
-  padding: 20px 50px 20px 50px;
+  padding: 0px 50px 0px 50px;
 }
 
-.nav_bar li div:active {
+/* .nav_bar li div:active {
   color: rgb(165, 164, 164);
   background-color: #212529;
-  padding: 15px 50px 15px 50px;
-}
+  padding: 0px 50px 0px 0px;
+} */
 
 .nav_button {
   transition: all 0.3s ease 0s;

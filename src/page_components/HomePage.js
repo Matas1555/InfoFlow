@@ -1,8 +1,11 @@
 import SideBar from "./SideBar";
 import NavBar from "./NavBar";
 import ReactionButtons from "../page_components/Reaction_buttons";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useInView } from "react-hook-inview";
+import Gravatar from "react-gravatar";
+import Spinner from "react-svg-spinner";
+import styled from "styled-components";
 import "../css/reaction_buttons.css";
 
 import "../css/homePage.css";
@@ -32,10 +35,18 @@ import {
   fetchArticlesFromDatabase,
   fetchTopArticles,
   fetchUserInteraction,
+  uploadArticlesLanguage,
+  fetchCountryArticlesFromDatabase,
 } from "./fetchArticles";
 
 const { v4: uuidv4 } = require("uuid");
 // import ScrollContainer from "./ScrollContainer";
+
+const Loader = styled.div`
+  width: 100%;
+  height: 70px;
+  text-align: center;
+`;
 
 const pageVariants = {
   initial: {
@@ -99,12 +110,13 @@ const HomePage = () => {
   const handleCategoryChange = async (category) => {
     const today = new Date();
     const dayBefore = new Date(today);
-    dayBefore.setDate(today.getDate() - 2);
+    dayBefore.setDate(today.getDate() - 1);
     setArticleDate(dayBefore);
     const yesterday = dayBefore.toISOString().split("T")[0];
     setArticleCategory(category);
     fetchArticlesFromDatabase(yesterday, category).then((articles) => {
       setArticles(articles);
+      setCurrentIndex(0);
     });
     console.log(category);
   };
@@ -112,15 +124,37 @@ const HomePage = () => {
   const handleLanguageChange = async (language) => {
     const today = new Date();
     const dayBefore = new Date(today);
-    dayBefore.setDate(today.getDate() - 2);
-    setArticleDate(dayBefore);
+    dayBefore.setDate(today.getDate() - 1);
+
     const yesterday = dayBefore.toISOString().split("T")[0];
-    setArticleCLanguage(language);
-    fetchTopArticles(language, articleCategory, yesterday).then((articles) => {
-      console.log(articles);
+
+    await fetchTopArticles(language, articleCategory, yesterday).then(
+      (articles) => {
+        if (articles.length === 0) {
+          // If filteredArticles is empty, subtract one day from the date and try again
+          handleLanguageChange(language);
+        } else {
+          uploadArticlesLanguage(
+            articles,
+            yesterday,
+            articleCategory,
+            language
+          );
+        }
+      }
+    );
+
+    await fetchCountryArticlesFromDatabase(
+      yesterday,
+      articleCategory,
+      language
+    ).then((articles) => {
       setArticles(articles);
+      setCurrentIndex(0);
     });
-    console.log(language);
+
+    setArticleDate(dayBefore);
+    setArticleCLanguage(language);
   };
 
   const handleCommentWindowClose = () => {
@@ -144,12 +178,16 @@ const HomePage = () => {
   useEffect(() => {
     const today = new Date();
     const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 2);
+    yesterday.setDate(today.getDate() - 1);
     setArticleDate(yesterday);
     setCurrentIndex(0);
 
     document.body.style.overflowY = allowScrolling ? "scroll" : "hidden";
   }, []);
+
+  // useEffect(() => {
+  //   console.log(currentIndex);
+  // }, [currentIndex]);
 
   useEffect(() => {
     if (articles[currentIndex]?.comments) {
@@ -166,87 +204,88 @@ const HomePage = () => {
   }, [currentIndex, articles]);
 
   function ScrollContainer() {
-    const [ref, isVisible] = useInView({
-      threshold: 0.2,
-    });
-
     // --------------------------CODE FOR REACTION BUTTONS--------------------------------
-    const [likePressed, setLikePressed] = useState(false);
-    const [dislikePressed, setDislikePressed] = useState(false);
-
     const handleLike = (index, article) => {
       let articleID = article.url.replace(/\//g, "_");
+      const user = auth.currentUser;
       // setLikePressed((a) => !a);
       // setDislikePressed(false); // Reset the dislike state
+      if (user) {
+        setArticles((currentArticles) => {
+          return currentArticles.map((article, i) => {
+            if (i === index) {
+              // Toggle the liked state of the article
+              let newLikes = article.likes;
+              let newDislikes = article.dislikes;
 
-      setArticles((currentArticles) => {
-        return currentArticles.map((article, i) => {
-          if (i === index) {
-            // Toggle the liked state of the article
-            let newLikes = article.likes;
-            let newDislikes = article.dislikes;
+              if (article.userHasLiked) {
+                newLikes--; // If already liked, decrement likes
+              } else {
+                newLikes++; // If not liked, increment likes
+              }
 
-            if (article.userHasLiked) {
-              newLikes--; // If already liked, decrement likes
-            } else {
-              newLikes++; // If not liked, increment likes
+              if (article.userHasDisliked) {
+                newDislikes--;
+              }
+
+              const updatedArticle = {
+                ...article,
+                likes: newLikes,
+                dislikes: newDislikes,
+                userHasLiked: !article.userHasLiked,
+                userHasDisliked: false,
+              };
+              return updatedArticle;
             }
-
-            if (article.userHasDisliked) {
-              newDislikes--;
-            }
-
-            const updatedArticle = {
-              ...article,
-              likes: newLikes,
-              dislikes: newDislikes,
-              userHasLiked: !article.userHasLiked,
-              userHasDisliked: false,
-            };
-            return updatedArticle;
-          }
-          return article;
+            return article;
+          });
         });
-      });
-      saveLikeOrDislike(articleID, auth, "like");
+        saveLikeOrDislike(articleID, auth, "like", article);
+      } else {
+        alert("Only logged in users can like an article");
+      }
       // fetchLikesAndDislikesCount(articleID);
     };
 
     const handleDislike = (index, article) => {
       let articleID = article.url.replace(/\//g, "_");
+      const user = auth.currentUser;
       // setDislikePressed((a) => !a);
       // setLikePressed(false); // Reset the like state
+      if (user) {
+        setArticles((articles) => {
+          return articles.map((article, i) => {
+            if (i === index) {
+              // Toggle the liked state of the article
+              let newLikes = article.likes;
+              let newDislikes = article.dislikes;
 
-      setArticles((articles) => {
-        return articles.map((article, i) => {
-          if (i === index) {
-            // Toggle the liked state of the article
-            let newLikes = article.likes;
-            let newDislikes = article.dislikes;
+              if (article.userHasDisliked) {
+                newDislikes--; // If already disliked, decrement dislikes
+              } else {
+                newDislikes++;
+              }
 
-            if (article.userHasDisliked) {
-              newDislikes--; // If already disliked, decrement dislikes
-            } else {
-              newDislikes++;
+              if (article.userHasLiked) {
+                newLikes--;
+              }
+
+              const updatedArticle = {
+                ...article,
+                likes: newLikes,
+                dislikes: newDislikes,
+                userHasDisliked: !article.userHasDisliked,
+                userHasLiked: false,
+              };
+              return updatedArticle;
             }
-
-            if (article.userHasLiked) {
-              newLikes--;
-            }
-
-            const updatedArticle = {
-              ...article,
-              likes: newLikes,
-              dislikes: newDislikes,
-              userHasDisliked: !article.userHasDisliked,
-              userHasLiked: false,
-            };
-            return updatedArticle;
-          }
-          return article;
+            return article;
+          });
         });
-      });
-      saveLikeOrDislike(articleID, auth, "dislike");
+        saveLikeOrDislike(articleID, auth, "dislike", article);
+      } else {
+        alert("Only logged in users can dislike an article");
+      }
     };
 
     const handlePostComment = (index) => {
@@ -276,16 +315,17 @@ const HomePage = () => {
         alert("Only logged in users can post a comment!");
       }
 
-      uploadCommentToDatabase(articleID, commentValue);
+      uploadCommentToDatabase(articleID, commentValue, articles[index]);
 
       document.getElementById("comment").value = "";
     };
 
-    const uploadCommentToDatabase = async (articleID, comment) => {
+    const uploadCommentToDatabase = async (articleID, comment, article) => {
+      const articleDate = article.publishedAt;
       const docRef = doc(
         db,
         "articles",
-        date.toISOString().split("T")[0],
+        articleDate,
         articleCategory,
         articleID
       );
@@ -300,7 +340,8 @@ const HomePage = () => {
       }
     };
 
-    const saveLikeOrDislike = async (articleID, auth, type) => {
+    const saveLikeOrDislike = async (articleID, auth, type, article) => {
+      const articleDate = article.publishedAt;
       const timestamp = new Date();
       const userId = auth.currentUser.uid;
       const customDocId = `${articleID}_${userId}`;
@@ -311,11 +352,10 @@ const HomePage = () => {
       const articleRef = doc(
         db,
         "articles",
-        date.toISOString().split("T")[0],
+        articleDate,
         articleCategory,
         articleID
       );
-      console.log(date);
 
       try {
         const docSnapshot = await getDocs(
@@ -377,6 +417,10 @@ const HomePage = () => {
     };
 
     // --------------------------CODE FOR REACTION BUTTONS--------------------------------
+    const [ref, isVisible] = useInView({
+      threshold: 1,
+      rootMargin: "1000px",
+    });
 
     const loadMoreArticles = () => {
       const yesterday = date.toISOString().split("T")[0];
@@ -386,9 +430,19 @@ const HomePage = () => {
       fetchArticlesFromDatabase(yesterday, articleCategory)
         .then((filteredArticles) => {
           console.log("These are the articles: ", filteredArticles);
-          setArticles((prevArticles) => [...prevArticles, ...filteredArticles]);
-
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          if (filteredArticles.length === 0) {
+            // If filteredArticles is empty, subtract one day from the date and try again
+            date.setDate(date.getDate() - 1);
+            setArticleDate(date);
+            loadMoreArticles();
+          } else {
+            setArticles((prevArticles) => [
+              ...prevArticles,
+              ...filteredArticles,
+            ]);
+            date.setDate(date.getDate() - 1);
+            setArticleDate(date);
+          }
         })
         .catch((error) => {
           console.log(error.message);
@@ -404,9 +458,6 @@ const HomePage = () => {
       //       console.log(error.message);
       //     });
       // }
-
-      date.setDate(date.getDate() - 1);
-      setArticleDate(date);
     };
 
     useEffect(() => {
@@ -415,96 +466,109 @@ const HomePage = () => {
       }
     }, [isVisible]);
 
+    useEffect(() => {
+      if (articles.length - currentIndex === 10) {
+        loadMoreArticles();
+      }
+    }, [currentIndex]);
+
     return (
       <>
         {/* <div className="background-container"> */}
         <div className="whole-container">
           <div className="List">
-            {articles.map((article, index) => (
-              <div>
-                {/* <div
+            {articles.map((article, index) => {
+              return (
+                <div>
+                  {/* <div
                 className={`${
                   article.urlToImage ? "WithImage" : "WithoutImage"
                 }`}
                 key={index}
               > */}
-                <div className="Item" key={index}>
-                  <a
-                    href={article.url} // Set the URL from the article data
-                    target="_blank" // Opens the link in a new tab
-                    key={index}
-                    className="ClickableContainer"
-                    onMouseEnter={() => setCurrentIndex(index)}
-                    onMouseLeave={() => setCurrentIndex(index)}
-                  >
-                    <div className="main-article-window">
-                      <div className="ImageContainer">
-                        <img
-                          src={article.urlToImage}
-                          alt={article.description}
-                          className="ResponsiveImage"
-                        />
-                      </div>
-                      <div className="articleInfo">
-                        <h1 className="article-author">{article.author}</h1>
-                        <h2 className="article-title">{article.title}</h2>
-                        <div className="article-bottom">
-                          <h1 className="article-source">{article.source}</h1>
-                          <h1 className="article-publishedAt">
-                            {article.publishedAt}
-                          </h1>
+                  <div className="Item" key={index}>
+                    <a
+                      href={article.url} // Set the URL from the article data
+                      target="_blank" // Opens the link in a new tab
+                      key={index}
+                      className="ClickableContainer"
+                      onMouseEnter={() => setCurrentIndex(index)}
+                      onMouseLeave={() => setCurrentIndex(index)}
+                    >
+                      <div className="main-article-window">
+                        <div className="ImageContainer">
+                          <img
+                            src={article.urlToImage}
+                            alt={article.description}
+                            className="ResponsiveImage"
+                          />
+                        </div>
+                        <div className="articleInfo">
+                          <h1 className="article-author">{article.author}</h1>
+                          <h2 className="article-title">{article.title}</h2>
+                          <div className="article-bottom">
+                            <h1 className="article-source">{article.source}</h1>
+                            <h1 className="article-publishedAt">
+                              {article.publishedAt}
+                            </h1>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
-                  <div className="ReactionButtons-container">
-                    <div className="reaction-button-text">
-                      <button
-                        className={`ReactionButtons ${
-                          article.userHasLiked ? "invert" : ""
-                        }`}
-                        onClick={() => handleLike(index, article)}
+                    </a>
+                    {/* --------------------REACTION BUTTONS--------------------- */}
+                    <div className="ReactionButtons-container">
+                      <div className="reaction-button-text">
+                        <button
+                          className={`ReactionButtons ${
+                            article.userHasLiked ? "invert" : ""
+                          }`}
+                          onClick={() => handleLike(index, article)}
+                        >
+                          <i className="fa fa-thumbs-up" aria-hidden="true"></i>
+                        </button>
+                        <p className="likes-text">{article.likes}</p>
+                      </div>
+                      <div className="reaction-button-text">
+                        <button
+                          className={`ReactionButtons ${
+                            article.userHasDisliked ? "invert" : ""
+                          }`}
+                          onClick={() => handleDislike(index, article)}
+                        >
+                          <i
+                            className="fa fa-thumbs-down"
+                            aria-hidden="true"
+                          ></i>
+                        </button>
+                        <p className="likes-text">{article.dislikes}</p>
+                      </div>
+                      <div
+                        className="reaction-button-text"
+                        onClick={handleCommentWindowOpen}
                       >
-                        <i className="fa fa-thumbs-up" aria-hidden="true"></i>
-                      </button>
-                      <p className="likes-text">{article.likes}</p>
+                        <button className="ReactionButtons">
+                          <i className="fa fa-comment" aria-hidden="true"></i>
+                        </button>
+                        <p className="likes-text">
+                          {Object.keys(article.comments).length}
+                        </p>
+                      </div>
+                      <div>
+                        <button className="ReactionButtons">
+                          <i className="fa fa-share-alt" aria-hidden="true"></i>
+                        </button>
+                      </div>
                     </div>
-                    <div className="reaction-button-text">
-                      <button
-                        className={`ReactionButtons ${
-                          article.userHasDisliked ? "invert" : ""
-                        }`}
-                        onClick={() => handleDislike(index, article)}
-                      >
-                        <i className="fa fa-thumbs-down" aria-hidden="true"></i>
-                      </button>
-                      <p className="likes-text">{article.dislikes}</p>
-                    </div>
-                    <div
-                      className="reaction-button-text"
-                      onClick={handleCommentWindowOpen}
-                    >
-                      <button className="ReactionButtons">
-                        <i className="fa fa-comment" aria-hidden="true"></i>
-                      </button>
-                      <p className="likes-text">
-                        {Object.keys(article.comments).length}
-                      </p>
-                    </div>
-                    <div>
-                      <button className="ReactionButtons">
-                        <i className="fa fa-share-alt" aria-hidden="true"></i>
-                      </button>
-                    </div>
+                    {/* --------------------REACTION BUTTONS--------------------- */}
                   </div>
-                </div>
 
-                {/* </div> */}
-              </div>
-            ))}
+                  {/* </div> */}
+                </div>
+              );
+            })}
 
             <div className="Loader" ref={ref}>
-              <i className="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+              <Spinner color="black" size="64px" thickness={4} />
             </div>
           </div>
         </div>
