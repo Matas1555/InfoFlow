@@ -34,33 +34,6 @@ const Contact = () => {
     document.getElementById("message").value = "";
   };
 
-  // const handleContact = () => {
-  //   const email = emailRef.current.value;
-  //   const username = usernameRef.current.value;
-  //   const message = messageRef.current.value;
-
-  //   emailjs
-  //     .sendForm(
-  //       "service_n8xc6bc",
-  //       "template_9cdxt28",
-  //       {
-  //         from_name: username,
-  //         message: message,
-  //         userEmail: email,
-  //       },
-  //       "E17NlWvktUyAYOvfN"
-  //     )
-  //     .then(
-  //       (result) => {
-  //         //window.location.reload(); //This is if you still want the page to reload (since e.preventDefault() cancelled that behavior)
-  //         alert("Your message has been sent!");
-  //       },
-  //       (error) => {
-  //         console.log(error.text);
-  //       }
-  //     );
-  // };
-
   return (
     <>
       <div className="contact-container">

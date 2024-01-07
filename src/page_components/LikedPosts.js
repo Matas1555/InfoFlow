@@ -1,5 +1,7 @@
 import defaultProfilePhoto from "../assets/default_profile.png";
 import "../css/likedposts.css";
+import transition from "../transition";
+import Spinner from "react-svg-spinner";
 import {
   collection,
   addDoc,
@@ -16,8 +18,9 @@ import { db, auth } from "../firebaseConfig";
 
 import { useEffect, useState } from "react";
 
-export default function LikedPosts() {
+function LikedPosts() {
   const [articles, setArticles] = useState([]);
+  const [isFetching, setFetching] = useState(true);
   const user = auth.currentUser;
   const allowScrolling = true;
 
@@ -78,6 +81,7 @@ export default function LikedPosts() {
 
     fetchLikedArticles().then((fetchedArticles) => {
       setArticles(fetchedArticles); // Set the articles state here
+      setFetching(false);
       console.log(articles);
     });
   }, []);
@@ -95,7 +99,14 @@ export default function LikedPosts() {
                   </div>
                   <div className="article-information">
                     <h1 className="liked-article-title">{article.title}</h1>
-                    <h1 className="liked-article-author"> {article.author}</h1>
+                    <h1 className="liked-article-author">
+                      {" "}
+                      {article.author} / {article.publishedAt}
+                    </h1>
+                    <h2 className="liked-article-desc">
+                      {" "}
+                      {article.description}
+                    </h2>
                     <h1 className="liked-article-source">{article.source}</h1>
                   </div>
                 </div>
@@ -104,7 +115,12 @@ export default function LikedPosts() {
           );
         })}
         ;
+        <div className="Loader">
+          ({isFetching && <Spinner color="black" size="64px" thickness={4} />})
+        </div>
       </div>
     </>
   );
 }
+
+export default transition(LikedPosts);

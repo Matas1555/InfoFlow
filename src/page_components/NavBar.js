@@ -57,7 +57,6 @@ export default function NavBar({ onLanguageChange }) {
           const user = snapshot.val();
           if (user.avatar === "") {
             setAvatar(dafaultProfilePhoto);
-            console.log(avatar);
           }
         },
         {

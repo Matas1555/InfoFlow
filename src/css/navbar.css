@@ -1,5 +1,6 @@
 .nav_bar_wrapper {
   z-index: 100;
+  position: sticky;
 }
 
 header {

@@ -72,8 +72,8 @@ const Login = () => {
     }
 
     if (!isPasswordValid(password)) {
-      console.log("Password is bad!");
-      alert("Password is bad!");
+      console.log("Password too short!");
+      alert("Password too short!");
       return;
     }
 
@@ -88,7 +88,7 @@ const Login = () => {
       !isFieldValid(password) ||
       !isFieldValid(email)
     ) {
-      console.log("Password is bad!");
+      console.log("Please valid characters");
       return;
     }
 
@@ -191,6 +191,7 @@ const Login = () => {
                 className="input"
                 name="email"
                 ref={emailRefLogIn}
+                required
               />
             </div>
             <div className="group">
@@ -203,6 +204,7 @@ const Login = () => {
                 className="input"
                 data-type="password"
                 ref={passwordRefLogIn}
+                required
               />
             </div>
             <div className="group">
@@ -230,6 +232,7 @@ const Login = () => {
                 type="text"
                 className="input"
                 ref={usernameRef}
+                required
               />
             </div>
             <div className="group">
@@ -242,6 +245,7 @@ const Login = () => {
                 className="input"
                 data-type="password"
                 ref={passwordRef}
+                required
               />
             </div>
             <div className="group">
@@ -254,13 +258,20 @@ const Login = () => {
                 className="input"
                 data-type="password"
                 ref={repeatPasswordRef}
+                required
               />
             </div>
             <div className="group">
               <label htmlFor="pass" className="label">
                 Email Address
               </label>
-              <input id="email" type="text" className="input" ref={emailRef} />
+              <input
+                id="email"
+                type="text"
+                className="input"
+                ref={emailRef}
+                required
+              />
             </div>
             <div className="group">
               <input

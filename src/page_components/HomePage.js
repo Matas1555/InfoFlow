@@ -1,9 +1,7 @@
 import SideBar from "./SideBar";
-import NavBar from "./NavBar";
-import ReactionButtons from "../page_components/Reaction_buttons";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useInView } from "react-hook-inview";
-import Gravatar from "react-gravatar";
+import altImage from "../assets/About/altArticlephoto.jpg";
 import Spinner from "react-svg-spinner";
 import styled from "styled-components";
 import "../css/reaction_buttons.css";
@@ -12,13 +10,9 @@ import "../css/homePage.css";
 import "../css/comments.css";
 import "../css/share.css";
 import defaultProfileFT from "../assets/default_profile.png";
-import profile1 from "../assets/profileft/images.jpg";
-import profile2 from "../assets/profileft/images (1).jpg";
-import profile3 from "../assets/profileft/images (2).jpg";
-
+import { updateDoc, doc } from "firebase/firestore";
+import { ref, get } from "firebase/database";
 import { realtimeDatabase, db, auth } from "../firebaseConfig";
-import { getDoc, doc, updateDoc } from "firebase/firestore";
-import { getDatabase, ref, get } from "firebase/database";
 import {
   where,
   deleteDoc,
@@ -29,7 +23,6 @@ import {
   increment,
 } from "firebase/firestore";
 
-import transition from "../transition";
 import { motion } from "framer-motion";
 
 import {
@@ -39,15 +32,6 @@ import {
   uploadArticlesLanguage,
   fetchCountryArticlesFromDatabase,
 } from "./fetchArticles";
-
-const { v4: uuidv4 } = require("uuid");
-// import ScrollContainer from "./ScrollContainer";
-
-const Loader = styled.div`
-  width: 100%;
-  height: 70px;
-  text-align: center;
-`;
 
 const pageVariants = {
   initial: {
@@ -100,15 +84,11 @@ const HomePage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [date, setArticleDate] = useState(new Date());
   const allowScrolling = false;
-  //Create a date variable
-  // const today = new Date();
-  // const yesterday = new Date(today);
-  // yesterday.setDate(today.getDate() - 1);
-  // setArticleDate(yesterday.toISOString().split("T")[0]);
 
   //handles the string that was passed from sidebar.js
   //uses the category in article fetching
   const handleCategoryChange = async (category) => {
+    setArticles([]);
     const today = new Date();
     const dayBefore = new Date(today);
     dayBefore.setDate(today.getDate() - 1);
@@ -127,6 +107,7 @@ const HomePage = () => {
     const dayBefore = new Date(today);
     dayBefore.setDate(today.getDate() - 1);
     const yesterday = dayBefore.toISOString().split("T")[0];
+    setArticles([]);
 
     if (language === "us") {
       await fetchArticlesFromDatabase(yesterday, articleCategory)
@@ -184,6 +165,8 @@ const HomePage = () => {
     const copyContent = async () => {
       try {
         await navigator.clipboard.writeText(copyText);
+        var tooltip = document.getElementById("myTooltip");
+        tooltip.innerHTML = "Copied!";
         console.log("Content copied to clipboard");
       } catch (err) {
         console.error("Failed to copy: ", err);
@@ -212,10 +195,6 @@ const HomePage = () => {
     document.body.style.overflowY = allowScrolling ? "scroll" : "hidden";
   }, []);
 
-  // useEffect(() => {
-  //   console.log(currentIndex);
-  // }, [currentIndex]);
-
   useEffect(() => {
     if (articles[currentIndex]?.comments) {
       const fetchCommentsData = async () => {
@@ -235,8 +214,6 @@ const HomePage = () => {
     const handleLike = (index, article) => {
       let articleID = article.url.replace(/\//g, "_");
       const user = auth.currentUser;
-      // setLikePressed((a) => !a);
-      // setDislikePressed(false); // Reset the dislike state
       if (user) {
         setArticles((currentArticles) => {
           return currentArticles.map((article, i) => {
@@ -271,14 +248,11 @@ const HomePage = () => {
       } else {
         alert("Only logged in users can like an article");
       }
-      // fetchLikesAndDislikesCount(articleID);
     };
 
     const handleDislike = (index, article) => {
       let articleID = article.url.replace(/\//g, "_");
       const user = auth.currentUser;
-      // setDislikePressed((a) => !a);
-      // setLikePressed(false); // Reset the like state
       if (user) {
         setArticles((articles) => {
           return articles.map((article, i) => {
@@ -494,10 +468,6 @@ const HomePage = () => {
       }
     }, [currentIndex]);
 
-    // useEffect(() => {
-    //   ScrollContainer();
-    // }, [reloadScrollContainer]);
-
     return (
       <>
         {/* <div className="background-container"> */}
@@ -524,8 +494,7 @@ const HomePage = () => {
                       <div className="main-article-window">
                         <div className="ImageContainer">
                           <img
-                            src={article.urlToImage}
-                            alt={article.description}
+                            src={article.urlToImage || altImage}
                             className="ResponsiveImage"
                           />
                         </div>
@@ -620,12 +589,17 @@ const HomePage = () => {
                     readOnly
                   ></input>
                 </div>
-                <button
-                  className="submit-comment-button"
-                  onClick={handleCopyArticleLink}
-                >
-                  Copy
-                </button>
+                <div className="tooltip">
+                  <button
+                    className="submit-comment-button"
+                    onClick={handleCopyArticleLink}
+                  >
+                    <span class="tooltiptext" id="myTooltip">
+                      Copy to clipboard
+                    </span>
+                    Copy
+                  </button>
+                </div>
               </div>
             </div>
           </div>

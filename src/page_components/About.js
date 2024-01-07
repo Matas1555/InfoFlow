@@ -1,7 +1,4 @@
 import "../css/about.css";
-import splatter1 from "../assets/About/Untitled-1.png";
-import banner from "../assets/About/ktu.edu-baneriai_Bendrinis-1140x400-1.jpg";
-import transition from "../transition";
 
 import { motion } from "framer-motion";
 import { useEffect } from "react";
