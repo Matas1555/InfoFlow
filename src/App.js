@@ -38,47 +38,44 @@ const App = () => {
 
   //Upon loading the website an API call is made
   useEffect(() => {
-    const executeArticleFetching = async (country, category, date) => {
-      fetchTopArticles(country, category, date)
-        .then((articles) => {
-          setArticles(articles);
-          uploadArticles(articles, date, category);
-        })
-        .catch((error) => {
-          console.error("Error fetching top articles: ", error);
-        });
-    };
-
-    const executeArticleFetchingByCountry = async (country, category, date) => {
-      fetchTopArticles(country, category, date)
-        .then((articles) => {
-          setArticles(articles);
-          uploadArticlesLanguage(articles, date, category, country);
-        })
-        .catch((error) => {
-          console.error("Error fetching top articles: ", error);
-        });
-    };
-
-    executeArticleFetching(country, "general", yesterdayDateString);
-    executeArticleFetching(country, "business", yesterdayDateString);
-    executeArticleFetching(country, "entertainment", yesterdayDateString);
-    executeArticleFetching(country, "health", yesterdayDateString);
-    executeArticleFetching(country, "science", yesterdayDateString);
-    executeArticleFetching(country, "sports", yesterdayDateString);
-    executeArticleFetching(country, "technology", yesterdayDateString);
-
-    executeArticleFetchingByCountry("ar", "general", yesterdayDateString);
-    executeArticleFetchingByCountry("de", "general", yesterdayDateString);
-    executeArticleFetchingByCountry("es", "general", yesterdayDateString);
-    executeArticleFetchingByCountry("fr", "general", yesterdayDateString);
-    executeArticleFetchingByCountry("he", "general", yesterdayDateString);
-    executeArticleFetchingByCountry("it", "general", yesterdayDateString);
-    executeArticleFetchingByCountry("nl", "general", yesterdayDateString);
-    executeArticleFetchingByCountry("no", "general", yesterdayDateString);
-    executeArticleFetchingByCountry("pt", "general", yesterdayDateString);
-    executeArticleFetchingByCountry("ru", "general", yesterdayDateString);
-    executeArticleFetchingByCountry("sv", "general", yesterdayDateString);
+    // const executeArticleFetching = async (country, category, date) => {
+    //   fetchTopArticles(country, category, date)
+    //     .then((articles) => {
+    //       setArticles(articles);
+    //       uploadArticles(articles, date, category);
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error fetching top articles: ", error);
+    //     });
+    // };
+    // const executeArticleFetchingByCountry = async (country, category, date) => {
+    //   fetchTopArticles(country, category, date)
+    //     .then((articles) => {
+    //       setArticles(articles);
+    //       uploadArticlesLanguage(articles, date, category, country);
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error fetching top articles: ", error);
+    //     });
+    // };
+    // executeArticleFetching(country, "general", yesterdayDateString);
+    // executeArticleFetching(country, "business", yesterdayDateString);
+    // executeArticleFetching(country, "entertainment", yesterdayDateString);
+    // executeArticleFetching(country, "health", yesterdayDateString);
+    // executeArticleFetching(country, "science", yesterdayDateString);
+    // executeArticleFetching(country, "sports", yesterdayDateString);
+    // executeArticleFetching(country, "technology", yesterdayDateString);
+    // executeArticleFetchingByCountry("ar", "general", yesterdayDateString);
+    // executeArticleFetchingByCountry("de", "general", yesterdayDateString);
+    // executeArticleFetchingByCountry("es", "general", yesterdayDateString);
+    // executeArticleFetchingByCountry("fr", "general", yesterdayDateString);
+    // executeArticleFetchingByCountry("he", "general", yesterdayDateString);
+    // executeArticleFetchingByCountry("it", "general", yesterdayDateString);
+    // executeArticleFetchingByCountry("nl", "general", yesterdayDateString);
+    // executeArticleFetchingByCountry("no", "general", yesterdayDateString);
+    // executeArticleFetchingByCountry("pt", "general", yesterdayDateString);
+    // executeArticleFetchingByCountry("ru", "general", yesterdayDateString);
+    // executeArticleFetchingByCountry("sv", "general", yesterdayDateString);
   }, []);
 
   return (

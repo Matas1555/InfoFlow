@@ -333,8 +333,9 @@ const HomePage = () => {
       const user = auth.currentUser;
 
       if (user) {
+        const commentPath = `comments.${user.uid}`;
         await updateDoc(docRef, {
-          comments: { [`${user.uid}`]: comment },
+          [commentPath]: comment,
         });
       } else {
         alert("You cannot post a comment");
